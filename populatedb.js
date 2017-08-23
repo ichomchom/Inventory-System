@@ -91,7 +91,7 @@ function orderCreate ( cartId, productId, dateCreated, datePickUp, dateReturn, s
     studentId : studentId, 
     status : status
   }
-  if(cartId != false) orderdetail.cartId = cartId
+
 
   var order = new Order(orderdetail);
 
@@ -100,7 +100,7 @@ function orderCreate ( cartId, productId, dateCreated, datePickUp, dateReturn, s
       cb(err, null)
       return
     }
-    console.log('New Order: ' + oder);
+    console.log('New Order: ' + order);
     orders.push(order)
     cb(null, order)
   });
@@ -157,27 +157,7 @@ function createProducts(cb) {
     async.parallel([
         function(callback) {
           productCreate( '2', '3', '12','testing', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
-          '1','0','test','test','available','false','false','10-20-2016','N6565', callback);
-        }
-        ],
-        // optional callback
-        cb);
-}
-
-
-function createStudents(cb) {
-    async.parallel([
-        function(callback) {
-          studentCreate('Patrick', 'Rothfuss', 'dfalfjd@yahoo.com','4564321321', callback);
-        }
-        ],
-        // optional callback
-        cb);
-}
-function createOrders(cb) {
-    async.parallel([
-        function(callback) {
-          orderCreate( carts[0], products[0], '08-23-2017','08-23-2017', 'false',students[0],'false', callback);
+          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
         }
         ],
         // optional callback
@@ -193,10 +173,30 @@ function createCarts(cb) {
         cb);
 }
 
+function createStudents(cb) {
+    async.parallel([
+        function(callback) {
+          studentCreate('Patrick', 'Rothfuss', 'dfalfjd@yahoo.com','4564321321', callback);
+        }
+        ],
+        // optional callback
+        cb);
+}
+function createOrders(cb) {
+    async.parallel([
+        function(callback) {
+          orderCreate( carts[0], products[0], '08-23-2017','08-23-2017', '07-15-2019',students[0],'Available', callback);
+        }
+        ],
+        // optional callback
+        cb);
+}
+
+
 function createProductInstances(cb) {
     async.parallel([
         function(callback) {
-          productInstanceCreate(products[0],'Available',callback);
+          productInstanceCreate(products[0],'Available','10-20-2017',callback);
         }
         ],
         // optional callback
@@ -204,11 +204,11 @@ function createProductInstances(cb) {
 }
 
 async.series([
+    createProducts,
     createStudents,
-    createOrders,
     createCarts,
+    createOrders,
     createProductInstances,
-    createProducts
     ],
 // optional callback
 function(err, results) {
