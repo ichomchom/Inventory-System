@@ -10,6 +10,19 @@ var users = require('./routes/users');
 
 var app = express();
 
+//Import mongoose module
+var mongoose = require('mongoose');
+
+//Set up mongoose connection
+var mongoDB = 'mongodb://admin:Passw12345@ds151963.mlab.com:51963/inventory';
+mongoose.connect(mongoDB);
+
+//Get Default connection
+var db = mongoose.connection;
+
+//Bind connection to error event
+db.on('error', console.error.bind(console,'MongoDB connection error:'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
