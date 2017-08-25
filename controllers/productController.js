@@ -1,7 +1,22 @@
 var Product = require ('../models/product');
+var ProductInstance = require('../models/productinstance');
+
+var async = require('async');
 
 exports.index = function(req,res){
-	res.send('NOT IMPLEMENTED: Site Home Page')
+	async.parallel({
+		product_count: function(callback){
+			Product.count(callback);
+		},
+		product_instance_count: function(callback){
+			ProductInstance.count(callback);
+		},
+		product_instance_available_count: function(callback){
+			ProductInstance.count({status:'Available'},callback);
+		},
+	}, function(err,results){
+		res.render('index',{title: 'Inventory Home', error: err, data: results});
+		});
 };
 
 //Display list of all Products

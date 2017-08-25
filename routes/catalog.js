@@ -5,7 +5,8 @@ var router = express.Router();
 var product_controller = require('../controllers/productController');
 var product_instance_controller = require('../controllers/productinstanceController');
 
-/// Produc ROUTES ///
+/// Product ROUTES ///
+
 /* GET catalog home page. */
 router.get('/', product_controller.index);
 

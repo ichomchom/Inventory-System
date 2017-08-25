@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1= title
+	p Welcome to CSE Inventory SYstem
+
+	h1 Dynamic content
+
+	if error
+		p Error getting dynamic content.
+	else
+		p The Inventory has the following record counts:
+
+		ul
+			li #[strong Products:] !{data.product_count}
+			li #[strong Total Products:] !{data.product_instance_count}
+			li #[strong Available Products:] !{data.product_instance_available_count}
