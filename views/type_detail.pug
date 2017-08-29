@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  h1 Type: #{type.name}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Products
+    
+    dl
+    each product in type_products
+      dt 
+        a(href=product.url) #{product.productName}
+      dd #{product.description}
+
+    else
+      p This gtype has no products

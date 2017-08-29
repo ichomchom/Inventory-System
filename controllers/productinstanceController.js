@@ -1,13 +1,27 @@
 var ProductInstance = require('../models/productinstance');
 
 // Display list of all ProductInstances
-exports.productinstance_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: ProductInstance list');
+exports.productinstance_list = function(req, res, next) {
+    
+	ProductInstance.find()
+		.populate('product')
+		.exec(function (err, list_productinstances) {
+			if (err) { return next(err);}
+			//Successful, render
+			res.render('productinstance_list',{ title: 'Product Instance List', productinstance_list: list_productinstances});
+		});
 };
 
 // Display detail page for a specific ProductInstance
-exports.productinstance_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: ProductInstance detail: ' + req.params.id);
+exports.productinstance_detail = function(req, res, next) {
+   
+   ProductInstance.findById(req.params.id)
+   .populate('product')
+   .exec(function(err,productinstance){
+	   if (err) {return next(err);}
+	   //Successful, render
+	   res.render('productinstance_detail',{title:'Product:', productinstance:productinstance});
+   });
 };
 
 // Display ProductInstance create form on GET

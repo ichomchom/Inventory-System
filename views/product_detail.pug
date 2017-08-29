@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  h1 #{title}: #{product.productName}
+  
+  
+  p #[strong Description:] #{product.description}  
+  p #[strong Type:]&nbsp;
+    each val in product
+      a(href=product.type.url) #{product.type.name}
+      |, 
+  
+  div(style='margin-left:20px;margin-top:20px')
+    h4 Status
+    
+    each val in product_instances
+      hr
+      if val.status=='Available'
+        p.text-success #{val.status}
+      else if val.status=='Maintenance'
+        p.text-danger #{val.status}
+      else
+        p.text-warning #{val.status} 
+      p #[strong Location:] #{val.location}
+      if val.status!='Available'
+        p #[strong Due date:] #{val.due_date_formatted}
+      p #[strong Id:]&nbsp;
+        a(href=val.url) #{val._id}
+ 
+    else
+      p There are no available product in the library.

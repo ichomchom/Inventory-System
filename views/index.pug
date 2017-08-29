@@ -2,7 +2,7 @@ extends layout
 
 block content
 	h1= title
-	p Welcome to CSE Inventory SYstem
+	p Welcome to CSE Inventory System
 
 	h1 Dynamic content
 
@@ -14,4 +14,5 @@ block content
 		ul
 			li #[strong Products:] !{data.product_count}
 			li #[strong Total Products:] !{data.product_instance_count}
+			li #[strong Total Types:] !{data.type_count}
 			li #[strong Available Products:] !{data.product_instance_available_count}

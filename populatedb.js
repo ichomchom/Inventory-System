@@ -14,6 +14,7 @@ var Cart = require('./models/cart')
 var Order = require('./models/order')
 var ProductInstance = require('./models/productinstance')
 var Student = require('./models/student')
+var Type = require('./models/type')
 
 
 var mongoose = require('mongoose');
@@ -27,12 +28,15 @@ var carts = []
 var orders = []
 var productinstances = []
 var students = []
+var types = []
 
-function productCreate( assetId, poNum, tagNum, description,
+function productCreate( productName, type, assetId, poNum, tagNum, description,
   manufacturer, model, serialId, version, productionDate, currentCustodianName, currentCustodianDept,
   assetCount, currentLocation, acquistionDate, acquistionFund, acquistionDept, acquistionProj,
   assetStatus, checkedOut, offsite, lastInventoryDate, tagNum, cb) {
   productdetail = { 
+	productName : productName,
+	type: type,
     assetId: assetId ,
     poNum: poNum,
     tagNum: tagNum,
@@ -61,6 +65,21 @@ function productCreate( assetId, poNum, tagNum, description,
   }  );
 }
 
+function typeCreate(name, cb){
+	typedetail = { name: name}
+	
+	var type = new Type(typedetail);
+	
+	type.save(function(err){
+		if (err){
+			cb(err, null)
+			return
+		}
+		console.log('New Type: ' + type);
+		types.push(type)
+		cb(null,type)
+	});
+}
 
 function studentCreate(firstName, lastName, studentEmail, coyoteId, cb) {
   studentdetail = {
@@ -109,6 +128,7 @@ function orderCreate ( cartId, productId, dateCreated, datePickUp, dateReturn, s
 
 
 
+
 function cartCreate( productId, dateAdded, quantity, cb){
   cartdetail = {
   productId : productId,
@@ -129,10 +149,11 @@ function cartCreate( productId, dateAdded, quantity, cb){
 }
 
 
-function productInstanceCreate( product, status, due_date, cb ){
+function productInstanceCreate( product, status, due_date, location, cb ){
   productinstancedetail ={
     product: product,
-    status: status
+    status: status,
+	location: location
   }
   if (due_date != false) productinstancedetail.due_date = due_date
   if (status != false) productinstancedetail.status = status
@@ -152,13 +173,34 @@ function productInstanceCreate( product, status, due_date, cb ){
 
 
 
-
+function createTypes(cb){
+	async.parallel([
+		function(callback){
+			typeCreate('Laptop', callback);
+		},
+		function(callback){
+			typeCreate('Chip', callback);
+		},
+		function(callback){
+			typeCreate('Robotic', callback);
+		},
+	],
+	cb);
+}
 function createProducts(cb) {
     async.parallel([
         function(callback) {
-          productCreate( '2', '3', '12','testing', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
+          productCreate( 'Dell', types[0] ,'2', '3', '12','Dell 2013 laptop', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
           '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
-        }
+        },
+		function(callback) {
+          productCreate( '401 chip', types[1] ,'2', '3', '12','chip for 401 class', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
+          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
+        },
+		function(callback) {
+          productCreate( 'Robotic', types[2] ,'2', '3', '12','Robotic materials', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
+          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
+        },
         ],
         // optional callback
         cb);
@@ -196,14 +238,21 @@ function createOrders(cb) {
 function createProductInstances(cb) {
     async.parallel([
         function(callback) {
-          productInstanceCreate(products[0],'Available','10-20-2017',callback);
-        }
+          productInstanceCreate(products[0],'Available','10-20-2017','CSE ITC office',callback);
+        },
+		function(callback) {
+          productInstanceCreate(products[1],'Out of Service','10-20-2017','library',callback);
+        },
+		function(callback) {
+          productInstanceCreate(products[2],'Maintance','10-20-2017','Business Office',callback);
+        },
         ],
         // optional callback
         cb);
 }
 
 async.series([
+	createTypes,
     createProducts,
     createStudents,
     createCarts,
