@@ -33,7 +33,7 @@ var types = []
 function productCreate( productName, type, assetId, poNum, tagNum, description,
   manufacturer, model, serialId, version, productionDate, currentCustodianName, currentCustodianDept,
   assetCount, currentLocation, acquistionDate, acquistionFund, acquistionDept, acquistionProj,
-  assetStatus, checkedOut, offsite, lastInventoryDate, tagNum, cb) {
+  assetStatus, checkedOut, offsite, lastInventoryDate, cb) {
   productdetail = { 
 	productName : productName,
 	type: type,
@@ -49,7 +49,7 @@ function productCreate( productName, type, assetId, poNum, tagNum, description,
     acquistionProj: acquistionProj,
     assetStatus: assetStatus,
     lastInventoryDate: lastInventoryDate,
-    tagNum: tagNum
+  
   }
  
     
@@ -191,15 +191,15 @@ function createProducts(cb) {
     async.parallel([
         function(callback) {
           productCreate( 'Dell', types[0] ,'2', '3', '12','Dell 2013 laptop', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
-          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
+          '1','0','test','test','available','none','none','10-20-2016', callback);
         },
 		function(callback) {
           productCreate( '401 chip', types[1] ,'2', '3', '12','chip for 401 class', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
-          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
+          '1','0','test','test','available','none','none','10-20-2016', callback);
         },
 		function(callback) {
           productCreate( 'Robotic', types[2] ,'2', '3', '12','Robotic materials', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
-          '1','0','test','test','available','none','none','10-20-2016','N6565', callback);
+          '1','0','test','test','available','none','none','10-20-2016', callback);
         },
         ],
         // optional callback

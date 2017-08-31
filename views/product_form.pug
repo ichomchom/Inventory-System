@@ -1,0 +1,74 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='productName') Product Name:
+      input#productName.form-control(type='text', placeholder='Name of product' name='productName' required='true' value=(undefined===product ? '' : product.productName) )
+
+    div.form-group
+      label Type:
+      div
+        for type in types
+          div(style='display: inline; padding-right:10px;')
+            input.checkbox-input(type='checkbox', name='type', id=type._id, value=type._id, checked=type.checked )
+            label(for=type._id) #{type.name}
+
+    div.form-group
+      label(for='assetId') Asset ID:
+      input#assetId.form-control(type='text', placeholder='Asset ID' name='assetId' value=(undefined===product ? '' : product.assetId) required='true')
+
+    div.form-group
+      label(for='poNum') P.O. Number:
+      input#poNum.form-control(type='text', placeholder='P.O. Number' name='poNum' value=(undefined===product ? '' : product.poNum) required='true') 
+
+    div.form-group
+      label(for='tagNum') Tag Number:
+      input#tagNum.form-control(type='text', placeholder='Tag Number' name='tagNum' value=(undefined===product ? '' : product.tagNum) required='true')
+
+    div.form-group
+      label(for='description') Description:
+      input#description.form-control(type='textarea', placeholder='Description of Product' name='description' value=(undefined===product ? '' : product.description) required='true') 
+
+    div.form-group
+      label(for='productionDate') Production Date:
+      input#productionDate.form-control(type='date', placeholder='mm/dd/yyyy',name='productionDate', value=(undefined===product ? '' : product.productionDate) required='true')
+
+    div.form-group
+      label(for='currentCustodianDept') Current Custodian Department:
+      input#currentCustodianDept.form-control(type='text', placeholder='CSE Dept, Math Dept, etc.' name='currentCsutodianDept' value=(undefined===product ? '' : product.currentCustodianDept) required='true') 
+
+    div.form-group
+      label(for='assetCount') Asset Count:
+      input#assetCount.form-control(type='text', placeholder='Asset Count' name='assetCount' value=(undefined===product ? '' : product.assetCount) required='true')
+
+    div.form-group
+      label(for='acquistionDate') Acquistion Date:
+      input#acquistionDate.form-control(type='date', placeholder='mm/dd/yyyy' name='acquistionDate' value=(undefined===product ? '' : product.acquistionDate) required='true') 
+
+    div.form-group
+      label(for='acquistionDept') Acquistion Department:
+      input#acquistionDept.form-control(type='text', placeholder='Acquistion Department' name='acquistionDept' value=(undefined===product ? '' : product.acquistionDept) required='true')
+
+    div.form-group
+      label(for='acquistionProj') Acquistion Project:
+      input#acquistionProj.form-control(type='text', placeholder='Acquistion Project' name='acquistionProj' value=(undefined===product ? '' : product.acquistionProj) required='true') 
+
+    div.form-group
+      label(for='assetStatus') Acquistion Department:
+      input#assetStatus.form-control(type='text', placeholder='Maintain, Available, etc.' name='assetStatus' value=(undefined===product ? '' : product.assetStatus) required='true')
+      
+    div.form-group
+      label(for='lastInventoryDate') Last Inventory Date:
+      input#lastInventoryDate.form-control(type='date', placeholder='mm/dd/yyyy' name='lastInventoryDate' value=(undefined===product ? '' : product.lastInventoryDate) required='true') 
+
+
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

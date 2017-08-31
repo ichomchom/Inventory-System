@@ -26,7 +26,7 @@ var ProductSchema = Schema({
 	checkedOut: {type: String},
 	offsite: {type: String},
 	lastInventoryDate: {type: Date, required: true},
-	tagNum: {type: String, required: true},
+
 });
 
 //virtual for product name

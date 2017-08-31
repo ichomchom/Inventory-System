@@ -38,7 +38,7 @@ exports.product_list = function(req, res, next){
 };
 
 //Display detail page for a specific Product
-exports.product_detail = function(req,res){
+exports.product_detail = function(req,res, next){
 	
 	async.parallel({
 		product: function(callback) {
@@ -60,14 +60,127 @@ exports.product_detail = function(req,res){
 };
 
 //Display Product create form on GET
-exports.product_create_get = function(req,res){
-	res.send('NOT IMPLEMENTED: Product create GET');
+exports.product_create_get = function(req,res, next){
+	
+	//Get all Type, which can use for adding to the product.
+	async.parallel({
+		types: function(callback){
+			Type.find(callback);
+		},
+		}, function(err, results){
+			if(err){return next(err);}
+			res.render('product_form',{title: 'Create Product', types: results.types});
+		
+	});
 };
 
 //Handle Product create on POST
-exports.product_create_post = function(req,res){
-	res.send('NOT IMPLEMENTED: Product create Post');
+exports.product_create_post = function(req,res, next){
+
+	req.checkBody('productName','Name must not be empty.').notEmpty();
+	req.checkBody('type','Type must not be empty.').notEmpty();
+	req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
+	req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
+	req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+	req.checkBody('description','Description must not be empty.').notEmpty();
+	req.checkBody('productionDate','Invalid date.').notEmpty();
+	req.checkBody('currentCustodianDept','Crruent Custodian Department must not be empty.').notEmpty();
+	req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
+	req.checkBody('acquistionDate','Invalid date.').notEmpty();
+	req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
+	req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
+	req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
+	req.checkBody('lastInventoryDate','Invalid date.').notEmpty();
+
+
+	req.sanitize('productName').escape();
+	req.sanitize('type').escape();
+	req.sanitize('assetId').escape();
+	req.sanitize('poNum').escape();
+	req.sanitize('tagNum').escape();
+	req.sanitize('description').escape();
+	req.sanitize('productionDate').toDate();
+	req.sanitize('currentCustodianDept').escape();
+	req.sanitize('assetCount').escape();
+	req.sanitize('acquistionDate').toDate();
+	req.sanitize('acquistionDept').escape();
+	req.sanitize('acquistionProj').escape();
+	req.sanitize('assetStatus').escape();
+	req.sanitize('lastInventoryDate').toDate();
+
+
+	req.sanitize('productName').trim();
+	//req.sanitize('type').trim();
+	req.sanitize('assetId').trim();
+	req.sanitize('poNum').trim();
+	req.sanitize('tagNum').trim();
+	req.sanitize('description').trim();
+	req.sanitize('productionDate').trim();
+	req.sanitize('currentCustodianDept').trim();
+	req.sanitize('assetCount').trim();
+	req.sanitize('acquistionDate').trim();
+	req.sanitize('acquistionDept').trim();
+	req.sanitize('acquistionProj').trim();
+	req.sanitize('assetStatus').trim();
+	req.sanitize('lastInventoryDate').trim();
+
+
+	var product = new Product({
+		productName : req.body.productName,
+		type: (typeof req.body.type==='undefined') ? [] : req.body.type.split(","),
+    	assetId: req.body.assetId ,
+    	poNum: req.body.poNum,
+    	tagNum: req.body.tagNum,
+    	description: req.body.description,
+    	productionDate: req.body.productionDate,
+    	currentCustodianDept: req.body.currentCustodianDept,
+    	assetCount: req.body.assetCount,
+    	acquistionDate: req.body.acquistionDate,
+    	acquistionDept: req.body.acquistionDept,
+    	acquistionProj: req.body.acquistionProj,
+    	assetStatus: req.body.assetStatus,
+    	lastInventoryDate: req.body.lastInventoryDate,
+    
+
+	});
+
+	console.log('PRODUCT: ' + product);
+
+	var errors = req.validationErrors();
+	if(errors){
+		//Some problesm, so re-render the product
+
+		//Get all type for form
+		async.parallel({
+			types: function(callback){
+				Type.find(callback);
+			},
+		}, function(err,results){
+			if (err){ return next(err);}
+			//Mark selected types as checked
+			
+			for(i = 0; i < results.types.length ; i++){
+				if(product.type.indexOf(results.types[i]._id) > -1 ) {
+					//Current type is selected. Set "checked" flag.
+					results.types[i].checked = 'true';
+				}
+			}
+			res.render('product_form', {title: 'Create Product', types:results.types, product: product, errors: errors});
+		
+		});
+	}
+	else {
+		//Data is invalid
+		//TODO: check book if exists, then save
+		product.save(function(err){
+			if(err){return next(err);}
+			//successful - redirect to new bproduct record
+			res.redirect(product.url);
+		});
+	}
+
 };
+
 
 //Display Product delete form on GET
 exports.product_delete_get = function(req,res){

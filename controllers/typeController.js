@@ -14,7 +14,14 @@ exports.type_list = function(req, res, next) {
 };
 
 // Display detail page for a specific Type
+
+exports.type_detail = function(req,res, next){
+  res.render('type_detail',{title:'Type:'});
+};
+/*
 exports.type_detail = function(req, res, next) {
+    res.render('type_detail',{title:'Create Type'});
+
 
   async.parallel({
     type: function(callback) {  
@@ -35,14 +42,58 @@ exports.type_detail = function(req, res, next) {
 
 };
 
+*/
+
 // Display Type create form on GET
-exports.type_create_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type create GET');
+exports.type_create_get = function(req, res, next) {
+    res.render('type_form',{title:'Create Type'});
 };
 
 // Handle Type create on POST
-exports.type_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type create POST');
+exports.type_create_post = function(req, res, next) {
+    
+    //Check that the name of the field is not empty
+    req.checkBody('name', 'Type name required').notEmpty();
+
+    //Trim and escape name field.
+    req.sanitize('name').escape();
+    req.sanitize('name').trim();
+
+    //Run the validators
+    var errors = req.validationErrors();
+
+    //Create a type object with escaped and trimmed data.
+    var type = new Type(
+      {name: req.body.name}
+      );
+
+    if(errors){
+      //If there are errors render the form again, passing the previously entered values and errors
+      res.render('type_form',{title:'Create Type', type: type, errors: errors});
+      return;
+    }
+    else{
+      //Data is valid
+      //Check if Type with the same name already exists
+
+      Type.findOne({'name' : req.body.name})
+        .exec (function(err,found_type){
+          console.log('found_type: ' + found_type);
+          if(err){return next(err);}
+
+          if(found_type){
+            //Type exists, redirect to detail page
+            res.redirect(found_type.url);
+          }
+          else {
+            type.save(function(err){
+              if (err) {return next(err);}
+              //Type saved. Redirect to type detail page
+              res.redirect(type.url);
+            });
+          }
+        });
+    }
 };
 
 // Display Type delete form on GET
