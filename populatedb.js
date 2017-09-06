@@ -201,6 +201,10 @@ function createProducts(cb) {
           productCreate( 'Robotic', types[2] ,'2', '3', '12','Robotic materials', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
           '1','0','test','test','available','none','none','10-20-2016', callback);
         },
+            function(callback) {
+          productCreate( 'Robotic', types[2] ,'2', '3', '12','Robotic materials', 'os','12','13','1.2','10-20-2016','me','CS','2','2',
+          '1','0','test','test','available','none','none','10-20-2016', callback);
+        },
         ],
         // optional callback
         cb);
