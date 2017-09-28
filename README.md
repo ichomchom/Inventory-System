@@ -6,7 +6,7 @@ These instructions will get you a copy of the project up and running on your loc
 [Node.js](http://nodejs.org)
 ### Installing
 * Install (if you don't have them):
-    * [Node.js](http://nodejs.org): apt-get install -y nodejs
+    * [Node.js](http://nodejs.org): ```apt-get install -y nodejs```
     * Plugins and app dependencies for npm: `npm install`
 ### Run the test
 * ```nmp start watch``` - watches the project with continuous rebuild.
