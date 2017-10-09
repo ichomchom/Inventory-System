@@ -6,8 +6,8 @@ block content
   
   p #[strong Description:] #{product.description}  
   p #[strong Type:]&nbsp;
-    each val in product
-      a(href=product.type.url) #{product.type.name}
+    each val in product.type
+      a(href=val.url) #{val.name}
       |, 
   
   div(style='margin-left:20px;margin-top:20px')

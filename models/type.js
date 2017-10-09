@@ -8,12 +8,6 @@ var TypeSchema = Schema(
   }
 );
 
-//Virtual for detail
-TypeSchema
-.virtual('detail')
-.get(function () {
-  return ' ' + this.name;
-});
 
 // Virtual for Type's URL
 TypeSchema

@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var ProductSchema = Schema({
 	productName: {type: String, required: true},
-	type: {type: Schema.ObjectId, ref: 'Type',required:true},
+	type: [{type: Schema.ObjectId, ref: 'Type',required:true}],
 	assetId: {type: Number, required: true},
 	poNum: {type: Number, required: true},
 	tagNum: {type: Number, required: true},
@@ -29,13 +29,14 @@ var ProductSchema = Schema({
 
 });
 
+/*
 //virtual for product name
 ProductSchema
 .virtual('descriptions')
 .get(function () {
 	return this.description;
 });
-
+*/
 
 //Virtual for Product's URL
 ProductSchema

@@ -15,13 +15,8 @@ exports.type_list = function(req, res, next) {
 
 // Display detail page for a specific Type
 
-exports.type_detail = function(req,res, next){
-  res.render('type_detail',{title:'Type:'});
-};
-/*
-exports.type_detail = function(req, res, next) {
-    res.render('type_detail',{title:'Create Type'});
 
+exports.type_detail = function(req, res, next) {
 
   async.parallel({
     type: function(callback) {  
@@ -42,7 +37,7 @@ exports.type_detail = function(req, res, next) {
 
 };
 
-*/
+
 
 // Display Type create form on GET
 exports.type_create_get = function(req, res, next) {
