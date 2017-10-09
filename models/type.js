@@ -19,7 +19,7 @@ TypeSchema
 TypeSchema
 .virtual('url')
 .get(function () {
-  return '/type/' + this._id;
+  return '/catalog/type/' + this._id;
 });
 
 //Export model
