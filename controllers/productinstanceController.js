@@ -40,6 +40,10 @@ exports.productinstance_create_get = function(req, res, next) {
 
 // Handle ProductInstance create on POST
 exports.productinstance_create_post = function(req, res, next) {
+
+    req.sanitize('id').escape();
+    req.sanitize('id').trim();
+
     req.checkBody('product', 'Product must be specified').notEmpty();
     req.checkBody('status', 'Status must be specified').notEmpty();
     req.checkBody('due_date', 'Invalid date').notEmpty();
@@ -64,7 +68,7 @@ exports.productinstance_create_post = function(req, res, next) {
 
     var errors = req.validationErrors();
     if(errors){
-    	Product.find({},'type')
+    	Product.find({},'productName')
     	.exec(function (err, products){
     		if(err) {return next(err);}
     		//Successful, render

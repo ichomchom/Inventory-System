@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var ProductSchema = Schema({
 	productName: {type: String, required: true},
-	type: [{type: Schema.ObjectId, ref: 'Type',required:true}],
+	type: [{type: Schema.ObjectId, ref: 'Type'}],
 	assetId: {type: Number, required: true},
 	poNum: {type: Number, required: true},
 	tagNum: {type: Number, required: true},
@@ -15,7 +15,7 @@ var ProductSchema = Schema({
 	version: {type: String},
 	productionDate: {type: Date, required: true},
 	currentCustodianName: {type: String},
-	currentCustodianDept: {type: String, required: true},
+	currentCustodianDept: {type: String},
 	assetCount: {type: Number, required: true},
 	currentLocation: {type: String},
 	acquistionDate: {type: Date, required: true},

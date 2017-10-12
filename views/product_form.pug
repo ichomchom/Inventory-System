@@ -7,14 +7,14 @@ block content
     div.form-group
       label(for='productName') Product Name:
       input#productName.form-control(type='text', placeholder='Name of product' name='productName' required='true' value=(undefined===product ? '' : product.productName) )
-
     div.form-group
-      label Type:
-      div
+      label(for='type') Type:
+      select#type.form-control(type='select', placeholder='Select type' name='type' required='true' )
         for type in types
-          div(style='display: inline; padding-right:10px;')
-            input.checkbox-input(type='checkbox', name='type', id=type._id, value=type._id, checked=type.checked )
-            label(for=type._id) #{type.name}
+          if product
+            option(value=type._id selected=(type._id.toString()==product.type._id.toString() ? 'selected' : false) ) #{type.name}
+          else
+            option(value=type._id) #{type.name}
 
     div.form-group
       label(for='assetId') Asset ID:

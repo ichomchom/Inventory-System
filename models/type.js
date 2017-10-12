@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var TypeSchema = Schema(
   {
-    name: {type: String, required: true, max: 100}
+    name: {type: String, required: true, min: 3, max: 100}
   }
 );
 

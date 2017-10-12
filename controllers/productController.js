@@ -78,13 +78,13 @@ exports.product_create_get = function(req,res, next){
 exports.product_create_post = function(req,res, next){
 
 	req.checkBody('productName','Name must not be empty.').notEmpty();
-	req.checkBody('type','Type must not be empty.').notEmpty();
+	//req.checkBody('type','Type must not be empty.').notEmpty();
 	req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
 	req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
 	req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
 	req.checkBody('description','Description must not be empty.').notEmpty();
 	req.checkBody('productionDate','Invalid date.').notEmpty();
-	req.checkBody('currentCustodianDept','Crruent Custodian Department must not be empty.').notEmpty();
+	req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
 	req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
 	req.checkBody('acquistionDate','Invalid date.').notEmpty();
 	req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
@@ -94,7 +94,7 @@ exports.product_create_post = function(req,res, next){
 
 
 	req.sanitize('productName').escape();
-	req.sanitize('type').escape();
+	//req.sanitize('type').escape();
 	req.sanitize('assetId').escape();
 	req.sanitize('poNum').escape();
 	req.sanitize('tagNum').escape();
@@ -115,14 +115,14 @@ exports.product_create_post = function(req,res, next){
 	req.sanitize('poNum').trim();
 	req.sanitize('tagNum').trim();
 	req.sanitize('description').trim();
-	req.sanitize('productionDate').trim();
+	//req.sanitize('productionDate').trim();
 	req.sanitize('currentCustodianDept').trim();
 	req.sanitize('assetCount').trim();
-	req.sanitize('acquistionDate').trim();
+	//req.sanitize('acquistionDate').trim();
 	req.sanitize('acquistionDept').trim();
 	req.sanitize('acquistionProj').trim();
 	req.sanitize('assetStatus').trim();
-	req.sanitize('lastInventoryDate').trim();
+	//req.sanitize('lastInventoryDate').trim();
 
 
 	var product = new Product({
@@ -139,7 +139,7 @@ exports.product_create_post = function(req,res, next){
     	acquistionDept: req.body.acquistionDept,
     	acquistionProj: req.body.acquistionProj,
     	assetStatus: req.body.assetStatus,
-    	lastInventoryDate: req.body.lastInventoryDate,
+    	lastInventoryDate: req.body.lastInventoryDate
     
 
 	});
@@ -149,6 +149,9 @@ exports.product_create_post = function(req,res, next){
 	var errors = req.validationErrors();
 	if(errors){
 		//Some problesm, so re-render the product
+		console.log('TYPE: ' +req.body.type);
+
+		console.log('ERROR: ' + errors);
 
 		//Get all type for form
 		async.parallel({
@@ -161,8 +164,10 @@ exports.product_create_post = function(req,res, next){
 			
 			for(i = 0; i < results.types.length ; i++){
 				if(product.type.indexOf(results.types[i]._id) > -1 ) {
+					console.log('IS_TYPE: ' + results.types[i].name);
 					//Current type is selected. Set "checked" flag.
 					results.types[i].checked = 'true';
+					console.log('ADDED: ' + results.types[i]);
 				}
 			}
 			res.render('product_form', {title: 'Create Product', types:results.types, product: product, errors: errors});

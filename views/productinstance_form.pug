@@ -6,12 +6,9 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='product') Product:
-      select#product.form-control(type='select' placeholder='Select product' name='product' required='true')
+      select#product.form-control(type='select', placeholder='Select product' name='product' required='true' )
         for product in product_list
-          if productinstance
-            option(value=product._id selected=(productinstance.product.toString()==product._id.toString() ? 'selected' : false)) #{product.title}
-          else
-            option(value=product._id) #{product.title}
+          option(value=product._id, selected=(selected_product==product._id.toString() ? 'selected' : false) ) #{product.productName}
 
     div.form-group
       label(for='status') Status:
