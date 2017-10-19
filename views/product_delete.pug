@@ -1,0 +1,44 @@
+extends layout
+
+block content
+
+  h1 #{title}: #{product.productName}
+  
+  p #[strong Description:] #{product.description}
+  p #[strong Type:] 
+    each val in product.type
+      a(href=val.url) #{val.name}
+      |, 
+
+  hr
+  
+  if product_instances.length
+  
+    p #[strong Delete the following copies before attempting to delete this Product.]
+  
+    div(style='margin-left:20px;margin-top:20px')
+
+      h4 Copies
+    
+        each product_copy in product_instances
+          hr
+          if product_copy.status=='Available'
+            p.text-success #{product_copy.status}
+          else if product_copy.status=='Maintance'
+            p.text-danger #{product_copy.status}
+          else
+            p.text-warning #{product_copy.status} 
+          p #[strong Location:] #{product_copy.location}
+          if product_copy.status!='Available'
+            p #[strong Due date:] #{product_copy.due_date}
+          p #[strong Id:] 
+            a(href=product_copy.url) #{product_copy._id}
+
+  else
+    p Do you really want to delete this Product?
+    
+    form(method='POST' action='')
+      div.form-group
+        input#id.form-control(type='hidden',name='id', required='true', value=product._id )
+
+      button.btn.btn-primary(type='submit') Delete

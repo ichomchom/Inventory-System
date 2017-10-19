@@ -16,7 +16,8 @@ var app = express();
 var mongoose = require('mongoose');
 
 //Set up mongoose connection
-var mongoDB = 'mongodb://admin:Passw12345@ds151963.mlab.com:51963/inventory';
+var db_url = 'mongodb://admin:Passw12345@ds151963.mlab.com:51963/inventory';
+var mongoDB = process.MONGODB_URI || db_url;
 mongoose.connect(mongoDB);
 
 //Get Default connection

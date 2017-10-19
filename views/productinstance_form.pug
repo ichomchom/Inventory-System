@@ -3,13 +3,16 @@ extends layout
 block content
   h1=title
 
+
   form(method='POST' action='')
     div.form-group
       label(for='product') Product:
       select#product.form-control(type='select', placeholder='Select product' name='product' required='true' )
         for product in product_list
-          option(value=product._id, selected=(selected_product==product._id.toString() ? 'selected' : false) ) #{product.productName}
-
+          if product
+            option(value=product._id selected=(selected_product==product._id.toString() ? 'selected' : false) ) #{product.productName}
+          else
+            option(value=product._id) #{product.productName}
     div.form-group
       label(for='status') Status:
       select#status.form-control(type='select' placeholder='Select status' name='status' required='true')

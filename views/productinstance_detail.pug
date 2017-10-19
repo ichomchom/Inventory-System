@@ -4,7 +4,7 @@ block content
 
   h1 ID: #{productinstance._id}
   
-  p #[strong Title:] 
+  p #[strong Product:] 
     a(href=productinstance.product.url) #{productinstance.product.productName}
   p #[strong Location:] #{productinstance.location}
 
@@ -18,3 +18,9 @@ block content
       
   if productinstance.status!='Available'
     p #[strong Due back:] #{productinstance.due_date_formatted}
+
+  hr
+  p
+    a(href=productinstance.url+'/delete') Delete ProductInstance
+  p
+    a(href=productinstance.url+'/update') Update ProductInstance

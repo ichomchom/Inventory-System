@@ -92,21 +92,95 @@ exports.type_create_post = function(req, res, next) {
 };
 
 // Display Type delete form on GET
-exports.type_delete_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type delete GET');
+exports.type_delete_get = function(req, res, next) {
+    async.parallel({
+      type: function(callback) {
+        Type.findById(req.params.id).exec(callback);
+      },
+      type_products: function(callback) {
+        Product.find({'type': req.params.id}).exec(callback);
+      },
+    }, function(err, results){
+      if(err) {return next(err);}
+      //Successful, render
+      res.render('type_delete', {title:'Delete Type', type: results.type, type_products:results.type_products});
+    });
 };
 
 // Handle Type delete on POST
-exports.type_delete_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type delete POST');
+exports.type_delete_post = function(req, res, next) {
+    
+    req.checkBody('id', 'Type id must be exist').notEmpty();
+
+    async.parallel({
+      type: function(callback) {
+        Type.findById(req.params.id).exec(callback);
+      },
+      type_products: function(callback){
+        Product.find({'type': req.params.id},'product description').exec(callback);
+      },
+    }, function(err,results){
+      if (err) {return next(err);}
+      //success
+      if (results.type_products.length > 0) {
+        //Type has products. Render as get route
+            res.render('type_delete', { title: 'Delete Type', type: results.type, type_products: results.type_products } );
+        return;
+      }
+      else{
+        Type.findByIdAndRemove(req.body.id, function deleteType(err){
+          if(err) {return next(err);}
+          res.redirect('/catalog/types');
+        })
+      }
+    });
 };
 
 // Display Type update form on GET
-exports.type_update_get = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type update GET');
+exports.type_update_get = function(req, res, next) {
+
+  req.sanitize('id').escape();
+  req.sanitize('id').trim();
+
+  Type.findById(req.params.id, function(err,type){
+    if(err) {return next(err);}
+    //success
+    res.render('type_form', {title: 'Update Type', type: type});
+  });
+
 };
 
 // Handle Type update on POST
-exports.type_update_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Type update POST');
+exports.type_update_post = function(req, res, next) {
+
+   //Escape the field
+   req.sanitize('id').escape();
+   req.sanitize('id').trim();
+
+
+     //Check name is not empty
+   req.checkBody('name', 'Type name required').notEmpty();
+
+   //Trim the field
+   req.sanitize('name').escape();
+   req.sanitize('name').trim();
+
+   var errors = req.validationErrors();
+
+   //Create Type object with escaped and trimmed data
+   var type = new Type({
+    name: req.body.name,
+    _id: req.params.id
+  });
+
+   if(errors){
+    res.render('type_form',{title: 'Update Type', type:type, errors: errors});
+    return;
+   }
+   else{
+    Type.findByIdAndUpdate(req.params.id, type, {}, function(err,thetype){
+      if (err){ return next(err);}
+      res.redirect(thetype.url);
+    });
+   }
 };
