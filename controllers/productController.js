@@ -152,7 +152,7 @@ exports.product_create_post = function(req,res, next){
 		console.log('TYPE: ' +req.body.type);
 
 		console.log('ERROR: ' + errors);
-
+/*
 		//Get all type for form
 		async.parallel({
 			types: function(callback){
@@ -175,7 +175,8 @@ exports.product_create_post = function(req,res, next){
 		
 		});
 	}
-	/*
+	*/
+	
 			Type.find({}, 'name')
 		.exec(function(err, types){
 
@@ -187,7 +188,7 @@ exports.product_create_post = function(req,res, next){
 		});
 		return;
 	}
-	*/
+	
 	else {
 		//Data is invalid
 		//TODO: check book if exists, then save
@@ -268,7 +269,7 @@ exports.product_update_get = function(req, res,next) {
                 }
             }
 */
-		res.render('product_form', {title:'Update Book', types: results.types, product: results.product});
+			res.render('product_form', {title: 'Update Product', type_list: results.types, product:results.product});
 	});
 };
 
@@ -340,7 +341,8 @@ exports.product_update_post = function(req, res, next) {
 		acquistionDept: req.body.acquistionDept,
 		acquistionProj: req.body.acquistionProj,
 		assetStatus: req.body.assetStatus,
-		lastInventoryDate: req.body.lastInventoryDate
+		lastInventoryDate: req.body.lastInventoryDate,
+		_id:req.params.id
 
 
 	});
@@ -348,6 +350,7 @@ exports.product_update_post = function(req, res, next) {
 
 	var errors = req.validationErrors();
 	if(errors){
+		/*
 		async.parallel({
 		types: function(callback){
 			Type.find(callback);
@@ -361,6 +364,17 @@ exports.product_update_post = function(req, res, next) {
 			}
 			res.render('product_form',{title: 'Update Product', types: results, product: product, errors: errors});
 	});
+	*/
+	Type.find({}, 'name')
+		.exec(function(err, types){
+
+			if(err){return next(err);}
+			//success, render		
+
+			res.render('product_form', {title: 'Update Product', type_list:types, selected_type: product.type._id, errors: errors, product:product});
+		
+		});
+		return;
 	}
 	else{
 		Product.findByIdAndUpdate(req.params.id, product, {}, function(err,theproduct){

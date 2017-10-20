@@ -10,9 +10,9 @@ block content
     div.form-group
       label(for='type') Type:
       select#type.form-control(type='select', placeholder='Select type' name='type' required='true' )
-        for type in types
-          if product
-            option(value=type._id selected=(type._id.toString()==product.type._id.toString() ? 'selected' : false) ) #{type.name}
+        for type in type_list
+          if type
+            option(value=type._id selected=(selected_type==type._id.toString() ? 'selected' : false) ) #{type.name}
           else
             option(value=type._id) #{type.name}
 
