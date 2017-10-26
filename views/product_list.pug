@@ -1,14 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  
-  ul
-  each product in product_list
-    li 
-      a(href=product.url) #{product.productName}
-      |  - #{product.description}
-      |#{product.type.detail}
+	ul.breadcrumb
+		li
+			a(href='/catalog') Home
+			i.icon-angle-right
+		li
+			a(href='/catalog/products') Products
 
-  else
-    li There are no products.
+	h1= title
+
+	ul
+
+	each product in product_list
+		li
+			a(href=product.url) #{product.productName}
+			| - #{product.description}
+			|#{product.type.detail}
+	else
+		li There are no products.

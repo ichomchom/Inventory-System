@@ -1,7 +1,14 @@
 extends layout
 
 block content
-
+  ul.breadcrumb
+    li
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/types') Types
+    li
+      a(href=type.url) #{type.name}
   h1 Type: #{type.name}
   
   div(style='margin-left:20px;margin-top:20px')

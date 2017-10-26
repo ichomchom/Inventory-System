@@ -1,8 +1,19 @@
 extends layout
 
 block content
-  h1=title
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/productinstances') Product-Instances
+      i.icon-angle-right
+    li
+      a(href='/catalog/productinstance/create') Create, Update Product-Instance
 
+
+  h1=title
 
   form(method='POST' action='')
     div.form-group

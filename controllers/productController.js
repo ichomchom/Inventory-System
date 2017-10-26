@@ -69,7 +69,7 @@ exports.product_create_get = function(req,res, next){
 		},
 		}, function(err, results){
 			if(err){return next(err);}
-			res.render('product_form',{title: 'Create Product', types: results.types});
+			res.render('product_form',{title: 'Create Product', type_list: results.types});
 		
 	});
 };
@@ -94,7 +94,7 @@ exports.product_create_post = function(req,res, next){
 
 
 	req.sanitize('productName').escape();
-	//req.sanitize('type').escape();
+	req.sanitize('type').escape();
 	req.sanitize('assetId').escape();
 	req.sanitize('poNum').escape();
 	req.sanitize('tagNum').escape();
@@ -127,7 +127,7 @@ exports.product_create_post = function(req,res, next){
 
 	var product = new Product({
 		productName : req.body.productName,
-		type: (typeof req.body.type==='undefined') ? [] : req.body.type.split(","),
+		type: req.body.type,
     	assetId: req.body.assetId ,
     	poNum: req.body.poNum,
     	tagNum: req.body.tagNum,
@@ -177,7 +177,7 @@ exports.product_create_post = function(req,res, next){
 	}
 	*/
 	
-			Type.find({}, 'name')
+	Type.find({}, 'name')
 		.exec(function(err, types){
 
 			if(err){return next(err);}
@@ -297,7 +297,7 @@ exports.product_update_post = function(req, res, next) {
 
 
 	req.sanitize('productName').escape();
-	//req.sanitize('type').escape();
+	req.sanitize('type').escape();
 	req.sanitize('assetId').escape();
 	req.sanitize('poNum').escape();
 	req.sanitize('tagNum').escape();
@@ -329,7 +329,7 @@ exports.product_update_post = function(req, res, next) {
 
 	var product = new Product({
 		productName : req.body.productName,
-		type: (typeof req.body.type==='undefined') ? [] : req.body.type.split(","),
+		type: req.body.type,
 		assetId: req.body.assetId ,
 		poNum: req.body.poNum,
 		tagNum: req.body.tagNum,

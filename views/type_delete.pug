@@ -1,6 +1,19 @@
 extends layout
 
 block content
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/types') Types
+      i.icon-angle-right
+    li
+      a(href=type.url) #{type.name}
+    li
+      a(href=type.url+'/delete') Delete #{type.name}
+
   h1 #{title}: #{type.name}
 
   

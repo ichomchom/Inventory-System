@@ -1,6 +1,17 @@
 extends layout
 
 block content
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/products') Products
+      i.icon-angle-right
+    li
+      a(href=product.url) #{product.productName}
+      
   h1 #{title}: #{product.productName}
   
   

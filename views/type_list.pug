@@ -1,13 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  
-  ul
-  each type in type_list
-    li 
-      a(href=type.url) #{type.name}
- 
-
-  else
-    li There are no types.
+	ul.breadcrumb
+		li
+			a(href='/catalog') Home
+			i.icon-angle-right
+		li
+			a(href='/catalog/types') Types
+	h1= title
+	ul
+		each type in type_list
+			li 
+				a(href=type.url) #{type.name}
+		else
+			li There are no types.

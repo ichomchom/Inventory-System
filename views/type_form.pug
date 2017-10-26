@@ -1,6 +1,18 @@
 extends layout
 
 block content
+
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/types') Types
+      i.icon-angle-right
+    li
+      a(href='/catalog/type/create') Create, Update Type
+
   h1 #{title}
 
   form(method='POST' action='')

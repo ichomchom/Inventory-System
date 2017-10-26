@@ -4,32 +4,93 @@ html(lang='en')
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
+    // start: CSS
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(href='stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
+
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/style-responsive.css')
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext', rel='stylesheet', type='text/css')
+    // end: CSS
   body
-    div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
+    // start: Header
+    .navbar
+      .navbar-inner
+        .container-fluid
+          a.navbar(data-toggle='collapse', data-target='.top-nav.nav-collapse,.sidebar-nav.nav-collapse')
+            span.icon-bar
+          a.brand(href='/catalog')
+            span Inventory System
+          // start: Header Menu
+          .nav-no-collapse.header-nav
+            ul.nav.pull-right
+              // start: User Dropdown
+              li.dropdown
+                a.btn.dropdown-toggle(data-toggle='dropdown', href='#')
+                  i.halflings-icon.white.user
+                  |  Admin
+                  span.caret
+                ul.dropdown-menu
+                  li.dropdown-menu-title
+                    span Account Settings
+                  li
+                    a(href='#')
+                      i.halflings-icon.user
+                      |  Profile
+                  li
+                    a(href='login.html')
+                      i.halflings-icon.off
+                      |  Logout
+              // end: User Dropdown
+          // end: Header Menu
+    // start: Header
+    .container-fluid-full
+      .row-fluid
+        // start: Main Menu
+        #sidebar-left.span2
           block sidebar
-            ul(class='sidebar-nav')
-              li 
-                a(href='/catalog') Home
-              li 
-                a(href='/catalog/products') All Products              
-              li 
-                a(href='/catalog/types') All Types
-              li 
-                a(href='/catalog/productinstances') All product-instances
-              li 
+            ul.nav.nav-tabs.nav-stacked.main-menu
+              li
+                a(href='/catalog')
+                  span.hidden-tablet  Home
+              li
+                a(href='/catalog/products')
+                  i.icon-envelope
+                  span.hidden-tablet  Products
+              li
+                a(href='/catalog/types')
+                  i.icon-tasks
+                  span.hidden-tablet  Types
+              li
+                a(href='/catalog/productinstances')
+                  i.icon-eye-open
+                  span.hidden-tablet  Product-Instances
+              li
                 hr
-              li 
-                a(href='/catalog/product/create') Create new product
-              li 
-                a(href='/catalog/type/create') Create new type
-              li 
-                a(href='/catalog/productinstance/create') Create new product instance (copy)
-                
-        div(class='col-sm-10')
+              li
+                a(href='/catalog/product/create')
+                  i.icon-envelope
+                  span.hidden-tablet  Create Product
+              li
+                a(href='/catalog/type/create')
+                  i.icon-tasks
+                  span.hidden-tablet  Create Type
+              li
+                a(href='/catalog/productinstance/create')
+                  i.icon-eye-open
+                  span.hidden-tablet  Create Product-Instance
+ 
+        // end: Main Menu
+
+        // start: Content
+        #content.span20
           block content
+
+    .clearfix
+    footer
+      p
+        span(style='text-align:left;float:left')
+          | © 2017 
+          a(href='https://cns.csusb.edu/cse') CSE CSUSB

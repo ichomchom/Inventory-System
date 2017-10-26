@@ -1,6 +1,12 @@
 extends layout
 
 block content
+  ul.breadcrumb
+    li
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/productinstances') Product-Instances
   h1= title
 
   ul
