@@ -5,7 +5,8 @@
 	.container-fluid-full {
 		overflow: hidden;
 		position: relative;
-		height: 100%;
+		min-height: 395px;
+		max-height: 100%;
 	}
 	
 	#content {
@@ -40,7 +41,8 @@
 	.container-fluid-full {
 		overflow: hidden;
 		position: relative;
-		height: 100%;
+		min-height: 395px;
+		max-height: 100%;
 	}
 	
 	#content {
@@ -140,7 +142,8 @@
 	.container-fluid-full {
 		overflow: hidden;
 		position: relative;
-		height: 100%;
+		min-height: 395px;
+		max-height: 100%;
 	}
 	
 	#content {
