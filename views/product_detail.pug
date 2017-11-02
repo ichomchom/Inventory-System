@@ -13,6 +13,69 @@ block content
       a(href=product.url) #{product.productName}
       
   h1 #{title}: #{product.productName}
+
+  .row-fluid.sortable
+    .box.span12
+      .box-header(data-original-title='')
+        h2
+          i.halflings-icon.white.user
+          span.break
+          | #{product.productName}
+        .box-icon
+          a.btn-setting(href='#')
+            i.halflings-icon.white.wrench
+          a.btn-minimize(href='#')
+            i.halflings-icon.white.chevron-up
+          a.btn-close(href='#')
+            i.halflings-icon.white.remove
+      .box-content
+        table.table.table-striped.table-bordered.bootstrap-datatable.datatable
+
+          thead
+            tr
+              th ID
+              th Location
+              th Status
+              th Tag
+              th Actions
+          tbody
+          each val in product_instances
+
+            tr
+              td 
+                a(href=val.url) #{val._id}
+              td.center #{val.location}
+              td.center
+                if val.status=='Available'
+                  span.label.label-success Available
+                else if val.status=='Out of Service'
+                  span.label.label-warning Out of Service
+                else
+                  span.label.label-important Maintenance
+              td.center #{product.tagNum} 
+              td.center
+                a.btn.btn-success(href='#')
+                  i.halflings-icon.white.zoom-in
+                a.btn.btn-info(href='#')
+                  i.halflings-icon.white.edit
+                a.btn.btn-danger(href='#')
+                  i.halflings-icon.white.trash
+          else
+            tr
+              td
+                N/A
+              td.center N/A
+              td.center N/A
+              td.center
+                a.btn.btn-success(href='#')
+                  i.halflings-icon.white.zoom-in
+                a.btn.btn-info(href='#')
+                  i.halflings-icon.white.edit
+                a.btn.btn-danger(href='#')
+                  i.halflings-icon.white.trash
+
+
+
   
   
   p #[strong Description:] #{product.description}  

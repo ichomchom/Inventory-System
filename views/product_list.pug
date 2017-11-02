@@ -10,12 +10,59 @@ block content
 
 	h1= title
 
-	ul
+	.row-fluid.sortable
+		.box.span12
+			.box-header(data-original-title='')
+				h2
+					i.halflings-icon.white.user
+					span.break
+					| Products
+				.box-icon
+					a.btn-setting(href='#')
+						i.halflings-icon.white.wrench
+					a.btn-minimize(href='#')
+						i.halflings-icon.white.chevron-up
+					a.btn-close(href='#')
+						i.halflings-icon.white.remove
+			.box-content
+				table.table.table-striped.table-bordered.bootstrap-datatable.datatable
 
-	each product in product_list
-		li
-			a(href=product.url) #{product.productName}
-			| - #{product.description}
-			|#{product.type.detail}
-	else
-		li There are no products.
+					thead
+						tr
+							th Name
+							th Description
+							th Type
+							th Actions
+					tbody
+					each product in product_list
+
+						tr
+							td 
+								a(href=product.url) #{product.productName}
+							td.center #{product.description}
+							td.center #{product.type.name}
+								
+							td.center
+								a.btn.btn-success(href='#')
+									i.halflings-icon.white.zoom-in
+								a.btn.btn-info(href='#')
+									i.halflings-icon.white.edit
+								a.btn.btn-danger(href='#')
+									i.halflings-icon.white.trash
+					else
+						tr
+							td
+								N/A
+							td.center N/A
+							td.center 
+								#count
+							td.center
+								a.btn.btn-success(href='#')
+									i.halflings-icon.white.zoom-in
+								a.btn.btn-info(href='#')
+									i.halflings-icon.white.edit
+								a.btn.btn-danger(href='#')
+									i.halflings-icon.white.trash
+
+
+

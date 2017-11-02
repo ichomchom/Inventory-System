@@ -1,23 +1,23 @@
 var Type = require('../models/type');
 var Product = require('../models/product');
-var Tag = require('../models/tag');
+var Tag = require('../models/type');
 var async = require('async');
 
 // Display list of all Type
-exports.type_list = function(req, res, next) {
-    Type.find()
+exports.tag_list = function(req, res, next) {
+    Tag.find()
 	.sort([['name','ascending']])
-	.exec(function (err, list_types) {
+	.exec(function (err, list_tags) {
 			if (err) { return next(err);}
 			//Successful, render
-			res.render('type_list',{ title: 'Type List', type_list: list_types});
+			res.render('tag_list',{ title: 'Tag List', tag_list: list_tags});
 		});
 };
 
 // Display detail page for a specific Type
 
 
-exports.type_detail = function(req, res, next) {
+exports.tag_detail = function(req, res, next) {
 
   async.parallel({
     type: function(callback) {  

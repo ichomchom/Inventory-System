@@ -1,6 +1,7 @@
 var Product = require ('../models/product');
 var ProductInstance = require('../models/productinstance');
 var Type = require ('../models/type');
+var Tag = require('../models/tag');
 
 var async = require('async');
 
@@ -25,15 +26,29 @@ exports.index = function(req,res){
 
 //Display list of all Products
 exports.product_list = function(req, res, next){
-	
+  async.parallel({
+    list_products: function(callback) {  
+        Product.find('productName description type').populate('type').exec(callback);
+    },
+        
+    product_count: function(callback) {            
+    	ProductInstance.find({'product': req.params.id}).count(callback);
+    },
 
-  Product.find({}, 'productName description type ')
+  }, function(err, results) {
+    if (err) { return next(err); }
+    //Successful, so render
+    res.render('product_list', { title: 'Product List', product_list:results.list_products, count:results.product_count} );
+  });
+ 
+
+/*  Product.find({}, 'productName description type ')
     .populate('type')
     .exec(function (err, list_products) {
       if (err) { return next(err); }
       //Successful, so render
-      res.render('product_list', { title: 'Product List', product_list: list_products });
-    });
+      res.render('product_list', { title: 'Product List', product_list: list_products, count: product_count });
+    });*/
     
 };
 

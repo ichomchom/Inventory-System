@@ -41,11 +41,9 @@ body
                     span Account Settings
                   li
                     a(href='#')
-                      i.halflings-icon.user
                       |  Profile
                   li
                     a(href='login.html')
-                      i.halflings-icon.off
                       |  Logout
                 // end: User Dropdown
           // end: Header Menu
@@ -87,7 +85,13 @@ body
                   span.hidden-tablet  Create Product-Instance
  
         // end: Main Menu
-
+        noscript
+          .alert.alert-block.span10
+            h4.alert-heading Warning!
+            p
+              | You need to have 
+              a(href='http://en.wikipedia.org/wiki/JavaScript', target='_blank') JavaScript
+              |  enabled to use this site.
         // start: Content
         #content.span20
           block content
@@ -98,7 +102,7 @@ body
         span(style='text-align:left;float:left')
           | © 2017 
           a(href='https://cns.csusb.edu/cse') CSE CSUSB
-    block script
+    script
     // start: JavaScript
     script(src='js/jquery-1.9.1.min.js')
     script(src='js/jquery-migrate-1.0.0.min.js')

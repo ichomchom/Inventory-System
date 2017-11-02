@@ -61,6 +61,32 @@ router.get('/type/:id', type_controller.type_detail);
 /* GET request for list of all Type. */
 router.get('/types', type_controller.type_list);
 
+/// TAG ROUTES ///
+
+/* GET request for creating a Type. NOTE This must come before route that displays Type (uses id) */
+router.get('/tag/create', tag_controller.tag_create_get);
+
+/* POST request for creating Type. */
+router.post('/tag/create', tag_controller.tag_create_post);
+
+/* GET request to delete Type. */
+router.get('/tag/:id/delete', tag_controller.tag_delete_get);
+
+// POST request to delete Type
+router.post('/tag/:id/delete', tag_controller.tag_delete_post);
+
+/* GET request to update Type. */
+router.get('/tag/:id/update', tag_controller.tag_update_get);
+
+// POST request to update Type
+router.post('/tag/:id/update', tag_controller.tag_update_post);
+
+/* GET request for one Type. */
+router.get('/tag/:id', tag_controller.tag_detail);
+
+/* GET request for list of all Type. */
+router.get('/tags', tag_controller.tag_list);
+
 
 /// PRODUCTINSTANCE ROUTES ///
 

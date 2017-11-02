@@ -1,5 +1,6 @@
 var ProductInstance = require('../models/productinstance');
 var Product = require('../models/product');
+var Tag = require('../models/tag');
 var async = require('async');
 
 // Display list of all ProductInstances
