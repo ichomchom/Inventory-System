@@ -17,4 +17,4 @@ TagSchema
 });
 
 //Export model
-module.exports = mongoose.model('Type', TagSchema);
+module.exports = mongoose.model('Tag', TagSchema);

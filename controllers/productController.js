@@ -26,6 +26,7 @@ exports.index = function(req,res){
 
 //Display list of all Products
 exports.product_list = function(req, res, next){
+
   async.parallel({
     list_products: function(callback) {  
         Product.find('productName description type').populate('type').exec(callback);
@@ -34,11 +35,26 @@ exports.product_list = function(req, res, next){
     product_count: function(callback) {            
     	ProductInstance.find({'product': req.params.id}).count(callback);
     },
-
+  /*
+   type: function(callback) {  
+      Type.findById(req.params.id)
+        .exec(callback);
+    },
+       
+    type_products: function(callback) {            
+      Product.find({ 'type': req.params.id })
+      .exec(callback);
+    }, 
+ */
+	type: function(callback) {
+		Product.findById(req.params.id)
+		.populate('type')
+		.exec(callback);
+	},
   }, function(err, results) {
     if (err) { return next(err); }
     //Successful, so render
-    res.render('product_list', { title: 'Product List', product_list:results.list_products, count:results.product_count} );
+    res.render('product_list', { title: 'Product List', product_list:results.list_products, count:results.product_count, type: results.type, type_products: results.type_products } );
   });
  
 

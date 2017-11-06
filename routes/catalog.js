@@ -5,6 +5,7 @@ var router = express.Router();
 var product_controller = require('../controllers/productController');
 var product_instance_controller = require('../controllers/productinstanceController');
 var type_controller = require('../controllers/typeController');
+var tag_controller = require('../controllers/tagController');
 
 /// Product ROUTES ///
 

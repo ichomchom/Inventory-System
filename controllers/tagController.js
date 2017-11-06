@@ -1,9 +1,10 @@
+var Tag = require('../models/tag');
 var Type = require('../models/type');
 var Product = require('../models/product');
-var Tag = require('../models/type');
+
 var async = require('async');
 
-// Display list of all Type
+// Display list of all Tag
 exports.tag_list = function(req, res, next) {
     Tag.find()
 	.sort([['name','ascending']])
@@ -14,42 +15,42 @@ exports.tag_list = function(req, res, next) {
 		});
 };
 
-// Display detail page for a specific Type
+// Display detail page for a specific Tag
 
 
 exports.tag_detail = function(req, res, next) {
 
   async.parallel({
-    type: function(callback) {  
-      Type.findById(req.params.id)
+    tag: function(callback) {  
+      Tag.findById(req.params.id)
         .exec(callback);
     },
         
-    type_products: function(callback) {            
-      Product.find({ 'type': req.params.id })
+    tag_products: function(callback) {            
+      Product.find({ 'tag': req.params.id })
       .exec(callback);
     },
 
   }, function(err, results) {
     if (err) { return next(err); }
     //Successful, so render
-    res.render('type_detail', { title: 'Type Detail', type: results.type, type_products: results.type_products } );
+    res.render('tag_detail', { title: 'Tag Detail', tag: results.tag, tag_products: results.tag_products } );
   });
 
 };
 
 
 
-// Display Type create form on GET
-exports.type_create_get = function(req, res, next) {
-    res.render('type_form',{title:'Create Type'});
+// Display Tag create form on GET
+exports.tag_create_get = function(req, res, next) {
+    res.render('tag_form',{title:'Create Tag'});
 };
 
-// Handle Type create on POST
-exports.type_create_post = function(req, res, next) {
+// Handle Tag create on POST
+exports.tag_create_post = function(req, res, next) {
     
     //Check that the name of the field is not empty
-    req.checkBody('name', 'Type name required').notEmpty();
+    req.checkBody('name', 'Tag name required').notEmpty();
 
     //Trim and escape name field.
     req.sanitize('name').escape();
@@ -58,101 +59,101 @@ exports.type_create_post = function(req, res, next) {
     //Run the validators
     var errors = req.validationErrors();
 
-    //Create a type object with escaped and trimmed data.
-    var type = new Type(
+    //Create a tag object with escaped and trimmed data.
+    var tag = new Tag(
       {name: req.body.name}
       );
 
     if(errors){
       //If there are errors render the form again, passing the previously entered values and errors
-      res.render('type_form',{title:'Create Type', type: type, errors: errors});
+      res.render('tag_form',{title:'Create Tag', tag: tag, errors: errors});
       return;
     }
     else{
       //Data is valid
-      //Check if Type with the same name already exists
+      //Check if Tag with the same name already exists
 
-      Type.findOne({'name' : req.body.name})
-        .exec (function(err,found_type){
-          console.log('found_type: ' + found_type);
+      Tag.findOne({'name' : req.body.name})
+        .exec (function(err,found_tag){
+          console.log('found_tag: ' + found_tag);
           if(err){return next(err);}
 
-          if(found_type){
-            //Type exists, redirect to detail page
-            res.redirect(found_type.url);
+          if(found_tag){
+            //Tag exists, redirect to detail page
+            res.redirect(found_tag.url);
           }
           else {
-            type.save(function(err){
+            tag.save(function(err){
               if (err) {return next(err);}
-              //Type saved. Redirect to type detail page
-              res.redirect(type.url);
+              //Tag saved. Redirect to tag detail page
+              res.redirect(tag.url);
             });
           }
         });
     }
 };
 
-// Display Type delete form on GET
-exports.type_delete_get = function(req, res, next) {
+// Display Tag delete form on GET
+exports.tag_delete_get = function(req, res, next) {
     async.parallel({
-      type: function(callback) {
-        Type.findById(req.params.id).exec(callback);
+      tag: function(callback) {
+        Tag.findById(req.params.id).exec(callback);
       },
-      type_products: function(callback) {
-        Product.find({'type': req.params.id}).exec(callback);
+      tag_products: function(callback) {
+        Product.find({'tag': req.params.id}).exec(callback);
       },
     }, function(err, results){
       if(err) {return next(err);}
       //Successful, render
-      res.render('type_delete', {title:'Delete Type', type: results.type, type_products:results.type_products});
+      res.render('tag_delete', {title:'Delete Tag', tag: results.tag, tag_products:results.tag_products});
     });
 };
 
-// Handle Type delete on POST
-exports.type_delete_post = function(req, res, next) {
+// Handle Tag delete on POST
+exports.tag_delete_post = function(req, res, next) {
     
-    req.checkBody('id', 'Type id must be exist').notEmpty();
+    req.checkBody('id', 'Tag id must be exist').notEmpty();
 
     async.parallel({
-      type: function(callback) {
-        Type.findById(req.params.id).exec(callback);
+      tag: function(callback) {
+        Tag.findById(req.params.id).exec(callback);
       },
-      type_products: function(callback){
-        Product.find({'type': req.params.id},'product description').exec(callback);
+      tag_products: function(callback){
+        Product.find({'tag': req.params.id},'product description').exec(callback);
       },
     }, function(err,results){
       if (err) {return next(err);}
       //success
-      if (results.type_products.length > 0) {
-        //Type has products. Render as get route
-            res.render('type_delete', { title: 'Delete Type', type: results.type, type_products: results.type_products } );
+      if (results.tag_products.length > 0) {
+        //Tag has products. Render as get route
+            res.render('tag_delete', { title: 'Delete Tag', tag: results.tag, tag_products: results.tag_products } );
         return;
       }
       else{
-        Type.findByIdAndRemove(req.body.id, function deleteType(err){
+        Tag.findByIdAndRemove(req.body.id, function deleteTag(err){
           if(err) {return next(err);}
-          res.redirect('/catalog/types');
+          res.redirect('/catalog/tags');
         })
       }
     });
 };
 
-// Display Type update form on GET
-exports.type_update_get = function(req, res, next) {
+// Display Tag update form on GET
+exports.tag_update_get = function(req, res, next) {
 
   req.sanitize('id').escape();
   req.sanitize('id').trim();
 
-  Type.findById(req.params.id, function(err,type){
+  Tag.findById(req.params.id, function(err,tag){
     if(err) {return next(err);}
     //success
-    res.render('type_form', {title: 'Update Type', type: type});
+    res.render('tag_form', {title: 'Update Tag', tag: tag});
   });
 
 };
 
-// Handle Type update on POST
-exports.type_update_post = function(req, res, next) {
+// Handle Tag update on POST
+exports.tag_update_post = function(req, res, next) {
 
    //Escape the field
    req.sanitize('id').escape();
@@ -160,7 +161,7 @@ exports.type_update_post = function(req, res, next) {
 
 
      //Check name is not empty
-   req.checkBody('name', 'Type name required').notEmpty();
+   req.checkBody('name', 'Tag name required').notEmpty();
 
    //Trim the field
    req.sanitize('name').escape();
@@ -168,20 +169,20 @@ exports.type_update_post = function(req, res, next) {
 
    var errors = req.validationErrors();
 
-   //Create Type object with escaped and trimmed data
-   var type = new Type({
+   //Create Tag object with escaped and trimmed data
+   var tag = new Tag({
     name: req.body.name,
     _id: req.params.id
   });
 
    if(errors){
-    res.render('type_form',{title: 'Update Type', type:type, errors: errors});
+    res.render('tag_form',{title: 'Update Tag', tag:tag, errors: errors});
     return;
    }
    else{
-    Type.findByIdAndUpdate(req.params.id, type, {}, function(err,thetype){
+    Tag.findByIdAndUpdate(req.params.id, tag, {}, function(err,thetag){
       if (err){ return next(err);}
-      res.redirect(thetype.url);
+      res.redirect(thetag.url);
     });
    }
 };

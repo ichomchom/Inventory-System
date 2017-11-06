@@ -1,0 +1,27 @@
+extends layout
+
+block content
+
+  ul.breadcrumb
+    li
+      i.icon-home
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/tags') Tags
+      i.icon-angle-right
+    li
+      a(href='/catalog/tag/create') Create, Update Tag
+
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='name') Tag:
+      input#name.form-control(tag='text', placeholder='State, Foundation, etc.' name='name' value=(undefined===tag ? '' : tag.name))
+    button.btn.btn-primary(tag='submit') Submit
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

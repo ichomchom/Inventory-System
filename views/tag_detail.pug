@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  ul.breadcrumb
+    li
+      a(href='/catalog') Home
+      i.icon-angle-right
+    li
+      a(href='/catalog/tags') Tags
+    li
+      a(href=tag.url) #{tag.name}
+  h1 Tag: #{tag.name}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Products
+    
+    dl
+    each product in tag_products
+      dt 
+        a(href=product.url) #{product.productName}
+      dd #{product.description}
+
+    else
+      p This tag has no products.
+
+  hr
+  p
+    a(href=tag.url+'/delete') Delete tag
+  p
+    a(href=tag.url+'/update') Update tag

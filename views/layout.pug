@@ -4,15 +4,23 @@ html(lang='en')
     title= title
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     // start: CSS
-    link#bootstrap-style(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
-    link(href='stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
+    //link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    //link(href='stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
 
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    //script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    //script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link#base-style(rel='stylesheet', href='/stylesheets/style.css')
     link#base-style-responsive(rel='stylesheet', href='/stylesheets/style-responsive.css')
+
+    //link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    //link(href='stylesheets/bootstrap-responsive.min.css', rel'stylesheet')
+    //link(href='stylesheets/style.css', rel'stylesheet')
+    //link(href='stylesheets/style-responsive.css', rel'stylesheet')
+
+
+
     link(href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext', rel='stylesheet', type='text/css')
     // end: CSS
     // start: Favicon
@@ -66,6 +74,10 @@ body
 
                   span.hidden-tablet  Types
               li
+                a(href='/catalog/tags')
+
+                  span.hidden-tablet  Tags              
+              li
                 a(href='/catalog/productinstances')
 
                   span.hidden-tablet  Product-Instances
@@ -79,6 +91,10 @@ body
                 a(href='/catalog/type/create')
 
                   span.hidden-tablet  Create Type
+              li
+                a(href='/catalog/tag/create')
+
+                  span.hidden-tablet  Create Tag                  
               li
                 a(href='/catalog/productinstance/create')
 
