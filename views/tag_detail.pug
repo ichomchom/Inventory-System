@@ -3,23 +3,25 @@ extends layout
 block content
   ul.breadcrumb
     li
+      i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/tags') Tags
+      i.icon-chevron-right
     li
       a(href=tag.url) #{tag.name}
   h1 Tag: #{tag.name}
   
   div(style='margin-left:20px;margin-top:20px')
 
-    h4 Products
+    h4 Product Instances
     
     dl
-    each product in tag_products
+    each val in product_list.product
       dt 
-        a(href=product.url) #{product.productName}
-      dd #{product.description}
+        a(href=val.url) #{val.productName}
+      dd #{val.description}
 
     else
       p This tag has no products.

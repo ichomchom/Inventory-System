@@ -5,12 +5,13 @@ block content
     li
       i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/tags') Tags
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href=tag.url) #{tag.name}
+      i.icon-chevron-right
     li
       a(href=tag.url+'/delete') Delete #{tag.name}
 
@@ -26,6 +27,7 @@ block content
       h4 Products
     
       dl
+      
       each product in tag_products
         dt 
           a(href=product.url) #{product.productName}

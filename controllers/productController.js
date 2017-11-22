@@ -19,6 +19,9 @@ exports.index = function(req,res){
 		type_count: function(callback){
 			Type.count(callback);
 		},
+		tag_count: function(callback){
+			Tag.count(callback);
+		},
 	}, function(err,results){
 		res.render('index',{title: 'Inventory Home', error: err, data: results});
 		});
@@ -35,6 +38,7 @@ exports.product_list = function(req, res, next){
     product_count: function(callback) {            
     	ProductInstance.find({'product': req.params.id}).count(callback);
     },
+
   /*
    type: function(callback) {  
       Type.findById(req.params.id)
@@ -46,15 +50,16 @@ exports.product_list = function(req, res, next){
       .exec(callback);
     }, 
  */
-	type: function(callback) {
+	product: function(callback) {
 		Product.findById(req.params.id)
 		.populate('type')
 		.exec(callback);
 	},
+
   }, function(err, results) {
     if (err) { return next(err); }
     //Successful, so render
-    res.render('product_list', { title: 'Product List', product_list:results.list_products, count:results.product_count, type: results.type, type_products: results.type_products } );
+    res.render('product_list', { title: 'Product List', product: results.product, product_list:results.list_products} );
   });
  
 
@@ -77,6 +82,13 @@ exports.product_detail = function(req,res, next){
 			.populate('type')
 			.exec(callback);
 		},
+
+		tag: function(callback){
+			ProductInstance.find('tag product')
+			.populate('tag')
+			.exec(callback);
+		},
+
 		product_instance: function(callback){
 			ProductInstance.find({'product': req.params.id})
 			//.populate('product')
@@ -85,7 +97,7 @@ exports.product_detail = function(req,res, next){
 	}, function(err,results){
 		if(err){return next(err);}
 		//Successful, render
-		res.render('product_detail',{title: 'Name', product: results.product, product_instances: results.product_instance});
+		res.render('product_detail',{title: 'Name', product: results.product, product_instances: results.product_instance, tags: results.tag});
 	
 	});
 };
@@ -110,67 +122,30 @@ exports.product_create_post = function(req,res, next){
 
 	req.checkBody('productName','Name must not be empty.').notEmpty();
 	//req.checkBody('type','Type must not be empty.').notEmpty();
-	req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
-	req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
-	req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+
 	req.checkBody('description','Description must not be empty.').notEmpty();
-	req.checkBody('productionDate','Invalid date.').notEmpty();
-	req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
-	req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
-	req.checkBody('acquistionDate','Invalid date.').notEmpty();
-	req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
-	req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
-	req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
-	req.checkBody('lastInventoryDate','Invalid date.').notEmpty();
 
 
 	req.sanitize('productName').escape();
 	req.sanitize('type').escape();
-	req.sanitize('assetId').escape();
-	req.sanitize('poNum').escape();
-	req.sanitize('tagNum').escape();
+
 	req.sanitize('description').escape();
-	req.sanitize('productionDate').toDate();
-	req.sanitize('currentCustodianDept').escape();
-	req.sanitize('assetCount').escape();
-	req.sanitize('acquistionDate').toDate();
-	req.sanitize('acquistionDept').escape();
-	req.sanitize('acquistionProj').escape();
-	req.sanitize('assetStatus').escape();
-	req.sanitize('lastInventoryDate').toDate();
+
 
 
 	req.sanitize('productName').trim();
 	//req.sanitize('type').trim();
-	req.sanitize('assetId').trim();
-	req.sanitize('poNum').trim();
-	req.sanitize('tagNum').trim();
+
 	req.sanitize('description').trim();
-	//req.sanitize('productionDate').trim();
-	req.sanitize('currentCustodianDept').trim();
-	req.sanitize('assetCount').trim();
-	//req.sanitize('acquistionDate').trim();
-	req.sanitize('acquistionDept').trim();
-	req.sanitize('acquistionProj').trim();
-	req.sanitize('assetStatus').trim();
-	//req.sanitize('lastInventoryDate').trim();
+
 
 
 	var product = new Product({
 		productName : req.body.productName,
 		type: req.body.type,
-    	assetId: req.body.assetId ,
-    	poNum: req.body.poNum,
-    	tagNum: req.body.tagNum,
+
     	description: req.body.description,
-    	productionDate: req.body.productionDate,
-    	currentCustodianDept: req.body.currentCustodianDept,
-    	assetCount: req.body.assetCount,
-    	acquistionDate: req.body.acquistionDate,
-    	acquistionDept: req.body.acquistionDept,
-    	acquistionProj: req.body.acquistionProj,
-    	assetStatus: req.body.assetStatus,
-    	lastInventoryDate: req.body.lastInventoryDate
+
     
 
 	});
@@ -311,68 +286,31 @@ exports.product_update_post = function(req, res, next) {
    req.sanitize('id').trim();
 
    //Check other data
-   	req.checkBody('productName','Name must not be empty.').notEmpty();
+	req.checkBody('productName','Name must not be empty.').notEmpty();
 	//req.checkBody('type','Type must not be empty.').notEmpty();
-	req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
-	req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
-	req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+
 	req.checkBody('description','Description must not be empty.').notEmpty();
-	req.checkBody('productionDate','Invalid date.').notEmpty();
-	req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
-	req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
-	req.checkBody('acquistionDate','Invalid date.').notEmpty();
-	req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
-	req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
-	req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
-	req.checkBody('lastInventoryDate','Invalid date.').notEmpty();
 
 
 	req.sanitize('productName').escape();
 	req.sanitize('type').escape();
-	req.sanitize('assetId').escape();
-	req.sanitize('poNum').escape();
-	req.sanitize('tagNum').escape();
+
 	req.sanitize('description').escape();
-	req.sanitize('productionDate').toDate();
-	req.sanitize('currentCustodianDept').escape();
-	req.sanitize('assetCount').escape();
-	req.sanitize('acquistionDate').toDate();
-	req.sanitize('acquistionDept').escape();
-	req.sanitize('acquistionProj').escape();
-	req.sanitize('assetStatus').escape();
-	req.sanitize('lastInventoryDate').toDate();
+
 
 
 	req.sanitize('productName').trim();
 	//req.sanitize('type').trim();
-	req.sanitize('assetId').trim();
-	req.sanitize('poNum').trim();
-	req.sanitize('tagNum').trim();
+
 	req.sanitize('description').trim();
-	//req.sanitize('productionDate').trim();
-	req.sanitize('currentCustodianDept').trim();
-	req.sanitize('assetCount').trim();
-	//req.sanitize('acquistionDate').trim();
-	req.sanitize('acquistionDept').trim();
-	req.sanitize('acquistionProj').trim();
-	req.sanitize('assetStatus').trim();
-	//req.sanitize('lastInventoryDate').trim();
+
+
 
 	var product = new Product({
 		productName : req.body.productName,
 		type: req.body.type,
-		assetId: req.body.assetId ,
-		poNum: req.body.poNum,
-		tagNum: req.body.tagNum,
-		description: req.body.description,
-		productionDate: req.body.productionDate,
-		currentCustodianDept: req.body.currentCustodianDept,
-		assetCount: req.body.assetCount,
-		acquistionDate: req.body.acquistionDate,
-		acquistionDept: req.body.acquistionDept,
-		acquistionProj: req.body.acquistionProj,
-		assetStatus: req.body.assetStatus,
-		lastInventoryDate: req.body.lastInventoryDate,
+
+    	description: req.body.description,
 		_id:req.params.id
 
 

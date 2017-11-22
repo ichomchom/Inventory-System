@@ -3,82 +3,57 @@ extends layout
 block content
   ul.breadcrumb
     li
+      i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/products') Products
-      i.icon-angle-right
+      i.icon-chevron-right
     li
-      a(href='/catalog/product/create') Create, Update Product
+      a(href='/catalog/product/create') #{title}
 
 
 
   h1= title
-
-  form(method='POST' action='')
-    div.form-group
-      label(for='productName') Product Name:
-      input#productName.form-control(type='text', placeholder='Name of product' name='productName' required='true' value=(undefined===product ? '' : product.productName) )
-    div.form-group
-      label(for='type') Type:
-      select#type.form-control(type='select', placeholder='Select type' name='type' required='true' )
-        for type in type_list
-          if type
-            option(value=type._id selected=(selected_type==type._id.toString() ? 'selected' : false) ) #{type.name}
-          else
-            option(value=type._id) #{type.name}
-
-    div.form-group
-      label(for='assetId') Asset ID:
-      input#assetId.form-control(type='text', placeholder='Asset ID' name='assetId' value=(undefined===product ? '' : product.assetId) required='true')
-
-    div.form-group
-      label(for='poNum') P.O. Number:
-      input#poNum.form-control(type='text', placeholder='P.O. Number' name='poNum' value=(undefined===product ? '' : product.poNum) required='true') 
-
-    div.form-group
-      label(for='tagNum') Tag Number:
-      input#tagNum.form-control(type='text', placeholder='Tag Number' name='tagNum' value=(undefined===product ? '' : product.tagNum) required='true')
-
-    div.form-group
-      label(for='description') Description:
-      input#description.form-control(type='textarea', placeholder='Description of Product' name='description' value=(undefined===product ? '' : product.description) required='true') 
-
-    div.form-group
-      label(for='productionDate') Production Date:
-      input#productionDate.form-control(type='date', placeholder='mm/dd/yyyy',name='productionDate', value=(undefined===product ? '' : product.productionDate) required='true')
-
-    div.form-group
-      label(for='currentCustodianDept') Current Custodian Department:
-      input#currentCustodianDept.form-control(type='text', placeholder='CSE Dept, Math Dept, etc.' name='currentCsutodianDept' value=(undefined===product ? '' : product.currentCustodianDept) required='true') 
-
-    div.form-group
-      label(for='assetCount') Asset Count:
-      input#assetCount.form-control(type='text', placeholder='Asset Count' name='assetCount' value=(undefined===product ? '' : product.assetCount) required='true')
-
-    div.form-group
-      label(for='acquistionDate') Acquistion Date:
-      input#acquistionDate.form-control(type='date', placeholder='mm/dd/yyyy' name='acquistionDate' value=(undefined===product ? '' : product.acquistionDate) required='true') 
-
-    div.form-group
-      label(for='acquistionDept') Acquistion Department:
-      input#acquistionDept.form-control(type='text', placeholder='Acquistion Department' name='acquistionDept' value=(undefined===product ? '' : product.acquistionDept) required='true')
-
-    div.form-group
-      label(for='acquistionProj') Acquistion Project:
-      input#acquistionProj.form-control(type='text', placeholder='Acquistion Project' name='acquistionProj' value=(undefined===product ? '' : product.acquistionProj) required='true') 
-
-    div.form-group
-      label(for='assetStatus') Acquistion Department:
-      input#assetStatus.form-control(type='text', placeholder='Maintain, Available, etc.' name='assetStatus' value=(undefined===product ? '' : product.assetStatus) required='true')
-      
-    div.form-group
-      label(for='lastInventoryDate') Last Inventory Date:
-      input#lastInventoryDate.form-control(type='date', placeholder='mm/dd/yyyy' name='lastInventoryDate' value=(undefined===product ? '' : product.lastInventoryDate) required='true') 
+  .row-fluid.sortable
+    .box.span12
+      .box-header(data-original-title='')
+        h2
+          i.halflings-icon.white.edit
+          span.break
+          | #{title}
+        .box-icon
+          a.btn-setting(href='#')
+            i.halflings-icon.white.wrench
+          a.btn-minimize(href='#')
+            i.halflings-icon.white.chevron-up
+          a.btn-close(href='#')
+            i.halflings-icon.white.remove
+      .box-content
+        form.form-horizontal(method='Post' action='')
+          fieldset
+            .control-group
+              label.control-label(for='productName') Product Name:
+              .controls
+                input#productName.input-xlarge.focused(type='text', placeholder='Name of product' name='productName' required='true' value=(undefined===product ? '' : product.productName))
+            .control-group
+              label.control-label(for='type') Type:
+              .controls
+                select#type.form-control(type='select',data-rel='chosen', placeholder='Select type' name='type' required='true' )
+                  for type in type_list
+                    if type
+                      option(value=type._id selected=(selected_type==type._id.toString() ? 'selected' : false) ) #{type.name}
+                    else
+                      option(value=type._id) #{type.name}
+            .control-group
+              label.control-label(for='productName') Product Name:
+              .controls
+                input#description.input-xlarge.focused(type='textarea', placeholder='Description of Product' name='description' value=(undefined===product ? '' : product.description) required='true')
+            .form-actions
+              button.btn.btn-primary(type='submit') Submit
 
 
 
-    button.btn.btn-primary(type='submit') Submit
 
   if errors 
     ul

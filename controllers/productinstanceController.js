@@ -29,13 +29,20 @@ exports.productinstance_detail = function(req, res, next) {
 
 // Display ProductInstance create form on GET
 exports.productinstance_create_get = function(req, res, next) {
+    async.parallel({
+        products: function(callback){
+            Product.find({},'productName').exec(callback);
+        },
+        tags: function(callback){
+            Tag.find({},'name').exec(callback);
+        },
+    }, function(err,results){
+    if(err){return next(err);}
+        //Successful, render
+        res.render('productinstance_form',{title:'Create ProductInstance',product_list:results.products, tag_list:results.tags});
     
-    Product.find({},'productName')
-    .exec(function(err,products){
-    	if(err){return next(err);}
-    	//Successful, render
-    	res.render('productinstance_form',{title:'Create ProductInstance',product_list:products});
     });
+
 
 
 };
@@ -48,32 +55,90 @@ exports.productinstance_create_post = function(req, res, next) {
     req.checkBody('status', 'Status must be specified').notEmpty();
     req.checkBody('due_date', 'Invalid date').notEmpty();
     req.checkBody('location', 'Location must be specified').notEmpty();
+    req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
+    req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
+    req.checkBody('tag', 'Tag must be specified').notEmpty();
+    req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+    req.checkBody('productionDate','Invalid date.').notEmpty();
+    req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
+    req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
+    req.checkBody('acquistionDate','Invalid date.').notEmpty();
+    req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
+    req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
+   // req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
+    req.checkBody('lastInventoryDate','Invalid date.').notEmpty();
+
+
 
     req.sanitize('product').escape();
     req.sanitize('status').escape();
   //  req.sanitize('due_date').escape();
     req.sanitize('location').escape();
+    req.sanitize('assetId').escape();
+    req.sanitize('poNum').escape();
+    req.sanitize('tag').escape();
+    req.sanitize('tagNum').escape();
+    req.sanitize('productionDate').toDate();
+    req.sanitize('currentCustodianDept').escape();
+    req.sanitize('assetCount').escape();
+    req.sanitize('acquistionDate').toDate();
+    req.sanitize('acquistionDept').escape();
+    req.sanitize('acquistionProj').escape();
+  //  req.sanitize('assetStatus').escape();
+    req.sanitize('lastInventoryDate').toDate();
 
     req.sanitize('product').trim();
     req.sanitize('status').trim();
     req.sanitize('due_date').toDate();
     req.sanitize('location').trim();
+    req.sanitize('assetId').trim();
+    req.sanitize('poNum').trim();
+    req.sanitize('tag').trim();
+    req.sanitize('tagNum').trim();
+    //req.sanitize('productionDate').trim();
+    req.sanitize('currentCustodianDept').trim();
+    req.sanitize('assetCount').trim();
+    //req.sanitize('acquistionDate').trim();
+    req.sanitize('acquistionDept').trim();
+    req.sanitize('acquistionProj').trim();
+  //  req.sanitize('assetStatus').trim();
+    //req.sanitize('lastInventoryDate').trim();
+
 
     var productinstance = new ProductInstance({
     	product: req.body.product,
     	status: req.body.status,
     	due_date: req.body.due_date,
-    	location: req.body.location
+    	location: req.body.location,
+        assetId: req.body.assetId ,
+        poNum: req.body.poNum,
+        tag: req.body.tag,
+        tagNum: req.body.tagNum,
+        productionDate: req.body.productionDate,
+        currentCustodianDept: req.body.currentCustodianDept,
+        assetCount: req.body.assetCount,
+        acquistionDate: req.body.acquistionDate,
+        acquistionDept: req.body.acquistionDept,
+        acquistionProj: req.body.acquistionProj,
+     //   assetStatus: req.body.assetStatus,
+        lastInventoryDate: req.body.lastInventoryDate
     });
 
     var errors = req.validationErrors();
     if(errors){
-  
-        Product.find({},'productName')
-        .exec(function (err, products) {
+        async.parallel({
+            tags: function(callback){
+                Tag.find({},'name')
+                 .exec(callback);
+            },
+           products:function(callback){
+               Product.find({},'productName')
+                .exec(callback);
+            },
+        },function(err,results){
           if (err) { return next(err); }
           //Successful, so render
-          res.render('productinstance_form', { title: 'Create ProductInstance', product_list : products, selected_product : productinstance.product._id , errors: errors, productinstance:productinstance });
+          res.render('productinstance_form', { title: 'Create ProductInstance', product_list : results.products, tag_list : results.tags, selected_tag: productinstance.tag._id, selected_product : productinstance.product._id , errors: errors, productinstance:productinstance });
         });
         return;
     }
@@ -109,17 +174,18 @@ exports.productinstance_delete_post = function(req, res, next) {
 exports.productinstance_update_get = function(req, res, next) {
     req.sanitize('id').escape();
     req.sanitize('id').trim();
-
+    
     async.parallel({
-        productinstance: function(callback){
-            ProductInstance.findById(req.params.id).populate('product').exec(callback)
-        },
         products: function(callback){
-            Product.find(callback)
+            Product.find({},'productName').exec(callback);
         },
-    }, function(err, results){
-        if(err) {return next(err);}
-        res.render('productinstance_form', {title: 'Update ProductInstance',product_list: results.products, selected_product: results.productinstance.product.id, productinstance:results.productinstance});
+        tags: function(callback){
+            Tag.find({},'name').exec(callback);
+        },
+    }, function(err,results){
+    if(err){return next(err);}
+        //Successful, render
+        res.render('productinstance_form',{title:'Update ProductInstance',product_list:results.products, tag_list:results.tags});
     
     });
 };
@@ -134,33 +200,91 @@ exports.productinstance_update_post = function(req, res, next) {
     req.checkBody('status', 'Status must be specified').notEmpty();
     req.checkBody('due_date', 'Invalid date').notEmpty();
     req.checkBody('location', 'Location must be specified').notEmpty();
+    req.checkBody('assetId','Asset ID must not be empty.').notEmpty();
+    req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
+   // req.checkBody('tag', 'Tag must be specified').notEmpty();
+    req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+    req.checkBody('productionDate','Invalid date.').notEmpty();
+    req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
+    req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
+    req.checkBody('acquistionDate','Invalid date.').notEmpty();
+    req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
+    req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
+   // req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
+    req.checkBody('lastInventoryDate','Invalid date.').notEmpty();
+
+
 
     req.sanitize('product').escape();
     req.sanitize('status').escape();
   //  req.sanitize('due_date').escape();
     req.sanitize('location').escape();
+    req.sanitize('assetId').escape();
+    req.sanitize('poNum').escape();
+    req.sanitize('tag').escape();
+    req.sanitize('tagNum').escape();
+    req.sanitize('productionDate').toDate();
+    req.sanitize('currentCustodianDept').escape();
+    req.sanitize('assetCount').escape();
+    req.sanitize('acquistionDate').toDate();
+    req.sanitize('acquistionDept').escape();
+    req.sanitize('acquistionProj').escape();
+  //  req.sanitize('assetStatus').escape();
+    req.sanitize('lastInventoryDate').toDate();
 
     req.sanitize('product').trim();
     req.sanitize('status').trim();
     req.sanitize('due_date').toDate();
     req.sanitize('location').trim();
+    req.sanitize('assetId').trim();
+    req.sanitize('poNum').trim();
+    req.sanitize('tag').trim();
+    req.sanitize('tagNum').trim();
+    //req.sanitize('productionDate').trim();
+    req.sanitize('currentCustodianDept').trim();
+    req.sanitize('assetCount').trim();
+    //req.sanitize('acquistionDate').trim();
+    req.sanitize('acquistionDept').trim();
+    req.sanitize('acquistionProj').trim();
+  //  req.sanitize('assetStatus').trim();
+    //req.sanitize('lastInventoryDate').trim();
+
 
     var productinstance = new ProductInstance({
         product: req.body.product,
         status: req.body.status,
         due_date: req.body.due_date,
         location: req.body.location,
-        _id: req.params.id
+        assetId: req.body.assetId ,
+        poNum: req.body.poNum,
+        tag: req.body.tag,
+        tagNum: req.body.tagNum,
+        productionDate: req.body.productionDate,
+        currentCustodianDept: req.body.currentCustodianDept,
+        assetCount: req.body.assetCount,
+        acquistionDate: req.body.acquistionDate,
+        acquistionDept: req.body.acquistionDept,
+        acquistionProj: req.body.acquistionProj,
+     //   assetStatus: req.body.assetStatus,
+        lastInventoryDate: req.body.lastInventoryDate,
+        _id:req.params.id
     });
 
     var errors = req.validationErrors();
     if(errors){
-  
-        Product.find({},'productName')
-        .exec(function (err, products) {
+        async.parallel({
+            tags: function(callback){
+                Tag.find({},'name')
+                 .exec(callback);
+            },
+           products:function(callback){
+               Product.find({},'productName')
+                .exec(callback);
+            },
+        },function(err,results){
           if (err) { return next(err); }
           //Successful, so render
-          res.render('productinstance_form', { title: 'Update ProductInstance', product_list : products, selected_product : productinstance.product._id , errors: errors, productinstance:productinstance });
+          res.render('productinstance_form', { title: 'Update ProductInstance', product_list : results.products, tag_list : results.tags, selected_tag: productinstance.tag._id, selected_product : productinstance.product._id , errors: errors, productinstance:productinstance });
         });
         return;
     }

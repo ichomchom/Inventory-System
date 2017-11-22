@@ -3,44 +3,127 @@ extends layout
 block content
   ul.breadcrumb
     li
-
+      i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/productinstances') Product-Instances
-      i.icon-angle-right
+      i.icon-chevron-right
     li
-      a(href='/catalog/productinstance/create') Create, Update Product-Instance
+      a(href='/catalog/productinstance/create') #{title}
 
 
   h1=title
+  .row-fluid.sortable
+    .box.span12
+      .box-header(data-original-title='')
+        h2
+          i.halflings-icon.white.edit
+          span.break
+          | #{title}
+        .box-icon
+          a.btn-setting(href='#')
+            i.halflings-icon.white.wrench
+          a.btn-minimize(href='#')
+            i.halflings-icon.white.chevron-up
+          a.btn-close(href='#')
+            i.halflings-icon.white.remove
+      .box-content
+        form.form-horizontal(method='Post' action='')
+          fieldset
+            .control-group
+              label.control-label(for='product') Product:
+              .controls
+                select#product.form-control(type='select',data-rel='chosen', placeholder='Select product' name='product' required='true' )
+                  for product in product_list
+                    if product
+                      option(value=product._id selected=(selected_product==product._id.toString() ? 'selected' : false) ) #{product.productName}
+                    else
+                      option(value=product._id) #{product.productName}
 
-  form(method='POST' action='')
-    div.form-group
-      label(for='product') Product:
-      select#product.form-control(type='select', placeholder='Select product' name='product' required='true' )
-        for product in product_list
-          if product
-            option(value=product._id selected=(selected_product==product._id.toString() ? 'selected' : false) ) #{product.productName}
-          else
-            option(value=product._id) #{product.productName}
-    div.form-group
-      label(for='status') Status:
-      select#status.form-control(type='select' placeholder='Select status' name='status' required='true')
-        option(value='Maintance') Maintance
-        option(value='Available') Available
-        option(value='Out of Service') Out of Service
-    
-    div.form-group
-      label(for='due_date') Date when product available:
-      input#due_date.form-control(type='date', placeholder='mm-dd-yyyy' name='due_date' value=(undefined===productinstance ? '' : productinstance.due_back))
+            .control-group
+              label.control-label(for='status') Status:
+              .controls
+                select#status.form-control(type='select',data-rel='chosen', placeholder='Select status' name='status' required='true')
+                  option(value='Maintance') Maintance
+                  option(value='Available') Available
+                  option(value='Out of Service') Out of Service
 
-    div.form-group
-      label(for='location') Location:
-      input#location.form-control(type='text' placeholder='CSE, Math' name='location' required='true' value=(undefined===productinstance ? '' : productinstance.location))        
+            .control-group
+              label.control-label(for='due_date') Date Available:
+              .controls
+                input#due_date.form-control(type='date',placeholder='mm-dd-yyyy' name='due_date' value=(undefined===productinstance ? '' : productinstance.due_back))
+
+            .control-group
+              label.control-label(for='location') Location:
+              .controls
+                input#location.input-xlarge.focused(type='text' placeholder='CSE, Math' name='location' required='true' value=(undefined===productinstance ? '' : productinstance.location))  
+
+            .control-group
+              label.control-label(for='assetId') Asset ID:
+              .controls
+                input#assetId.input-xlarge.focused(type='text', placeholder='Asset ID' name='assetId' value=(undefined===product ? '' : product.assetId) required='true')
+
+            .control-group
+              label.control-label(for='poNum') P.O. Number:
+              .controls
+                input#poNum.input-xlarge.focused(type='text', placeholder='P.O. Number' name='poNum' value=(undefined===product ? '' : product.poNum) required='true') 
+
+            .control-group
+              label.control-label(for='tag') Tag:
+              .controls
+                select#tag.form-control(type='select',data-rel='chosen', placeholder='Select tag type' name='tag' required='true' )
+                  for tag in tag_list
+                    if tag
+                      option(value=tag._id select=(selected_tag==tag._id.toString() ? 'selected' : false)) #{tag.name}
+                    else
+                      option(value=tag._id) #{tag.name}
+
+            .control-group
+              label.control-label(for='tagNum') Tag Number:
+              .controls
+                input#tagNum.input-xlarge.focused(type='text', placeholder='Tag Number' name='tagNum' value=(undefined===product ? '' : product.tagNum) required='true')            
+
+            .control-group
+              label.control-label(for='productionDate') Production Date:
+              .controls
+                input#productionDate.form-control(type='date', placeholder='mm/dd/yyyy',name='productionDate', value=(undefined===product ? '' : product.productionDate) required='true') 
+ 
+
+            .control-group
+              label.control-label(for='currentCustodianDept') Current Custodian Department:
+              .controls
+                input#currentCustodianDept.input-xlarge.focused(type='text', placeholder='CSE Dept, Math Dept, etc.' name='currentCsutodianDept' value=(undefined===product ? '' : product.currentCustodianDept) required='true')
 
 
-    button.btn.btn-primary(type='submit') Submit
+            .control-group
+              label.control-label(for='assetCount') Asset Count:
+              .controls
+                input#assetCount.input-xlarge.focused(type='text', placeholder='Asset Count' name='assetCount' value=(undefined===product ? '' : product.assetCount) required='true')
+
+            .control-group
+              label.control-label(for='acquistionDate') Acquistion Date:
+              .controls
+                input#acquistionDate.input-xlarge.focused(type='date', placeholder='mm/dd/yyyy' name='acquistionDate' value=(undefined===product ? '' : product.acquistionDate) required='true') 
+
+            .control-group
+              label.control-label(for='acquistionDept') Acquistion Department:
+              .controls
+                input#acquistionDept.input-xlarge.focused(type='text', placeholder='Acquistion Department' name='acquistionDept' value=(undefined===product ? '' : product.acquistionDept) required='true')
+
+
+            .control-group
+              label.control-label(for='acquistionProj') Acquistion Project:
+              .controls
+                input#acquistionProj.input-xlarge.focused(type='text', placeholder='Acquistion Project' name='acquistionProj' value=(undefined===product ? '' : product.acquistionProj) required='true') 
+
+
+            .control-group
+              label.control-label(for='lastInventoryDate') Last Inventory Date:
+              .controls
+                input#lastInventoryDate.input-xlarge.focused(type='date', placeholder='mm/dd/yyyy' name='lastInventoryDate' value=(undefined===product ? '' : product.lastInventoryDate) required='true') 
+            .form-actions
+              button.btn.btn-primary(type='submit') Submit 
 
   if errors 
     ul

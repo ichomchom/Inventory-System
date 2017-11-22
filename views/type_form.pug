@@ -6,20 +6,39 @@ block content
     li
       i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/types') Types
-      i.icon-angle-right
+      i.icon-chevron-right
     li
-      a(href='/catalog/type/create') Create, Update Type
+      a(href='/catalog/type/create') #{title}
 
   h1 #{title}
+  .row-fluid.sortable
+    .box.span12
+      .box-header(data-original-title='')
+        h2
+          i.halflings-icon.white.edit
+          span.break
+          | #{title}
+        .box-icon
+          a.btn-setting(href='#')
+            i.halflings-icon.white.wrench
+          a.btn-minimize(href='#')
+            i.halflings-icon.white.chevron-up
+          a.btn-close(href='#')
+            i.halflings-icon.white.remove
+      .box-content
+        form.form-horizontal(method='Post' action='')
+          fieldset
+            .control-group
+              label.control-label(for='name') Type:
+              .controls
+                input#focusedInput.input-xlarge.focused(type='text', placeholder='Laptop, Desktop, Printer, etc.' name='name' value=(undefined===type ? '' :type.name))
+            
+            .form-actions
+              button.btn.btn-primary(type='submit') Submit
 
-  form(method='POST' action='')
-    div.form-group
-      label(for='name') Type:
-      input#name.form-control(type='text', placeholder='Laptop, Chip etc.' name='name' value=(undefined===type ? '' : type.name))
-    button.btn.btn-primary(type='submit') Submit
 
   if errors 
     ul

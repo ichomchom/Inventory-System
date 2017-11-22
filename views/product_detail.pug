@@ -5,107 +5,86 @@ block content
     li
       i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/products') Products
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href=product.url) #{product.productName}
       
   h1 #{title}: #{product.productName}
 
-  .row-fluid.sortable
-    .box.span12
-      .box-header(data-original-title='')
-        h2
-          i.halflings-icon.white.user
-          span.break
-          | #{product.productName}
-        .box-icon
-          a.btn-setting(href='#')
-            i.halflings-icon.white.wrench
-          a.btn-minimize(href='#')
-            i.halflings-icon.white.chevron-up
-          a.btn-close(href='#')
-            i.halflings-icon.white.remove
-      .box-content
-        table.table.table-striped.table-bordered.bootstrap-datatable.datatable
+  hr
 
-          thead
-            tr
-              th ID
-              th Location
-              th Status
-              th Tag
-              th Actions
-          tbody
-          each val in product_instances
-
-            tr
-              td 
-                a(href=val.url) #{val._id}
-              td.center #{val.location}
-              td.center
-                if val.status=='Available'
-                  span.label.label-success Available
-                else if val.status=='Out of Service'
-                  span.label.label-warning Out of Service
-                else
-                  span.label.label-important Maintenance
-              td.center #{product.tagNum} 
-              td.center
-                a.btn.btn-success(href='#')
-                  i.halflings-icon.white.zoom-in
-                a.btn.btn-info(href='#')
-                  i.halflings-icon.white.edit
-                a.btn.btn-danger(href='#')
-                  i.halflings-icon.white.trash
-          else
-            tr
-              td N/A
-              td.center N/A
-              td.center N/A
-              td.center N/A
-              td.center
-                a.btn.btn-success(href='#')
-                  i.halflings-icon.white.zoom-in
-                a.btn.btn-info(href='#')
-                  i.halflings-icon.white.edit
-                a.btn.btn-danger(href='#')
-                  i.halflings-icon.white.trash
-
-
-
-  
-  
   p #[strong Description:] #{product.description}  
   p #[strong Type:]&nbsp;
     each val in product.type
       a(href=val.url) #{val.name}
-      |, 
-  
-  div(style='margin-left:20px;margin-top:20px')
-    h4 Status
-    
-    each val in product_instances
-      hr
-      if val.status=='Available'
-        p.text-success #{val.status}
-      else if val.status=='Maintenance'
-        p.text-danger #{val.status}
-      else
-        p.text-warning #{val.status} 
-      p #[strong Location:] #{val.location}
-      if val.status!='Available'
-        p #[strong Due date:] #{val.due_date_formatted}
-      p #[strong Id:]&nbsp;
-        a(href=val.url) #{val._id}
- 
-    else
-      p There are no available product in the library.
 
-  hr
-  p
-    a(href=product.url+'/delete') Delete Product
-  p
-    a(href=product.url+'/update') Update Product
+
+    .row-fluid.sortable
+      .box.span12
+        .box-header(data-original-title='')
+          h2
+            i.halflings-icon.white.list-alt
+            span.break
+            | #{product.productName}
+
+            
+          .box-icon
+            a.btn-setting(href='#')
+              i.halflings-icon.white.wrench
+            a.btn-minimize(href='#')
+              i.halflings-icon.white.chevron-up
+            a.btn-close(href='#')
+              i.halflings-icon.white.remove
+        .box-content
+          table.table.table-striped.table-bordered.bootstrap-datatable.datatable
+            thead
+              tr
+                th ID
+                th Location
+                th Status
+                th Asset ID
+                th P.O. Number             
+                th Tag
+                th Tag Number
+                th Asset Count
+                th Last Inventory Date
+                th Actions
+            tbody
+
+            each val in product_instances
+
+              tr
+                td 
+                  a(href=val.url) #{val._id}
+                td.center #{val.location}
+                td.center
+                  if val.status=='Available'
+                    span.label.label-success Available
+                  else if val.status=='Out of Service'
+                    span.label.label-warning Out of Service
+                  else
+                    span.label.label-important Maintenance
+                td.center #{val.assetId}
+                td.center #{val.poNum}            
+                td.center 
+                      //each val in tags.tag
+                        //a(href=val.url) #{val.name}
+                td.center #{val.tagNum}
+                td.center #{val.assetCount}
+                td.center #{val.lastInventoryDate_formatted}
+
+
+
+                td.center
+                  a.btn.btn-info(href=val.url+'/update')
+                    i.halflings-icon.white.edit
+                  a.btn.btn-danger(href=val.url+'/delete')
+                    i.halflings-icon.white.trash
+            else
+              tr
+      
+
+

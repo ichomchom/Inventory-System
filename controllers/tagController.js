@@ -1,6 +1,7 @@
 var Tag = require('../models/tag');
 var Type = require('../models/type');
 var Product = require('../models/product');
+var ProductInstance = require('../models/productinstance');
 
 var async = require('async');
 
@@ -27,14 +28,22 @@ exports.tag_detail = function(req, res, next) {
     },
         
     tag_products: function(callback) {            
-      Product.find({ 'tag': req.params.id })
+      ProductInstance.find({ 'tag': req.params.id })
       .exec(callback);
     },
+        list_products: function(callback) {  
+        ProductInstance.find('product tag').populate('product').exec(callback);
+    },
+    product : function(callback){
+        ProductInstance.findById(req.params.id)
+        .populate('tag')
+        .exec(callback);
+      },
 
   }, function(err, results) {
     if (err) { return next(err); }
     //Successful, so render
-    res.render('tag_detail', { title: 'Tag Detail', tag: results.tag, tag_products: results.tag_products } );
+    res.render('tag_detail', { title: 'Tag Detail',product_list: results.list_products, product: results.product, tag: results.tag, tag_products: results.tag_products } );
   });
 
 };
@@ -100,12 +109,17 @@ exports.tag_delete_get = function(req, res, next) {
         Tag.findById(req.params.id).exec(callback);
       },
       tag_products: function(callback) {
-        Product.find({'tag': req.params.id}).exec(callback);
+        ProductInstance.find({'tag': req.params.id}).exec(callback);
+      },
+      product : function(callback){
+        ProductInstance.findById(req.params.id)
+        .populate('product')
+        .exec(callback);
       },
     }, function(err, results){
       if(err) {return next(err);}
       //Successful, render
-      res.render('tag_delete', {title:'Delete Tag', tag: results.tag, tag_products:results.tag_products});
+      res.render('tag_delete', {title:'Delete Tag',products: results.product, tag: results.tag, tag_products:results.tag_products});
     });
 };
 
@@ -119,14 +133,19 @@ exports.tag_delete_post = function(req, res, next) {
         Tag.findById(req.params.id).exec(callback);
       },
       tag_products: function(callback){
-        Product.find({'tag': req.params.id},'product description').exec(callback);
+        ProductInstance.find({'tag': req.params.id},'product description').exec(callback);
+      },
+      product : function(callback){
+        ProductInstance.findById(req.params.id)
+        .populate('product')
+        .exec(callback);
       },
     }, function(err,results){
       if (err) {return next(err);}
       //success
       if (results.tag_products.length > 0) {
         //Tag has products. Render as get route
-            res.render('tag_delete', { title: 'Delete Tag', tag: results.tag, tag_products: results.tag_products } );
+            res.render('tag_delete', { title: 'Delete Tag',products: results.product, tag: results.tag, tag_products: results.tag_products } );
         return;
       }
       else{

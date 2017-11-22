@@ -3,10 +3,12 @@ extends layout
 block content
   ul.breadcrumb
     li
+      i.icon-home
       a(href='/catalog') Home
-      i.icon-angle-right
+      i.icon-chevron-right
     li
       a(href='/catalog/types') Types
+      i.icon-chevron-right
     li
       a(href=type.url) #{type.name}
   h1 Type: #{type.name}
