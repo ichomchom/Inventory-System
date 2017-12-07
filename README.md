@@ -1,5 +1,7 @@
 # Inventory-System
 This is an Inventory System building using Nodejs, ExpressJs, and MongooDB.
+Sample rune.
+[Inventory System](https://arcane-ravine-32785.herokuapp.com/catalog)
 ## Getting started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 ### Prerequisites
