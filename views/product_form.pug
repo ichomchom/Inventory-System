@@ -46,7 +46,7 @@ block content
                     else
                       option(value=type._id) #{type.name}
             .control-group
-              label.control-label(for='productName') Product Name:
+              label.control-label(for='description') Description:
               .controls
                 input#description.input-xlarge.focused(type='textarea', placeholder='Description of Product' name='description' value=(undefined===product ? '' : product.description) required='true')
             .form-actions

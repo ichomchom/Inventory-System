@@ -49,6 +49,11 @@ block content
                 th P.O. Number             
                 th Tag
                 th Tag Number
+                th Serial ID
+                th Asset ID
+                th Model
+                th Department
+                th Sum Cost
                 th Asset Count
                 th Last Inventory Date
                 th Actions
@@ -73,6 +78,11 @@ block content
                       //each val in tags.tag
                         //a(href=val.url) #{val.name}
                 td.center #{val.tagNum}
+                td.center #{val.serialId}
+                td.center #{val.assetId}
+                td.center #{val.model}
+                td.center #{val.acquistionDept}
+                td.center #{val.acquistionFund}
                 td.center #{val.assetCount}
                 td.center #{val.lastInventoryDate_formatted}
 

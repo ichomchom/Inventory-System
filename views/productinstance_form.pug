@@ -83,6 +83,17 @@ block content
               label.control-label(for='tagNum') Tag Number:
               .controls
                 input#tagNum.input-xlarge.focused(type='text', placeholder='Tag Number' name='tagNum' value=(undefined===product ? '' : product.tagNum) required='true')            
+ 
+
+            .control-group
+              label.control-label(for='model') Model:
+              .controls
+                input#model.input-xlarge.focused(type='text', placeholder='Model' name='model' value=(undefined===product ? '' : product.model) required='true')    
+
+            .control-group
+              label.control-label(for='serialId') Serial ID:
+              .controls
+                input#serialId.input-xlarge.focused(type='text', placeholder='Serial ID' name='serialId' value=(undefined===product ? '' : product.serialId) required='true')    
 
             .control-group
               label.control-label(for='productionDate') Production Date:
@@ -105,6 +116,13 @@ block content
               label.control-label(for='acquistionDate') Acquistion Date:
               .controls
                 input#acquistionDate.input-xlarge.focused(type='date', placeholder='mm/dd/yyyy' name='acquistionDate' value=(undefined===product ? '' : product.acquistionDate) required='true') 
+
+            .control-group
+              label.control-label(for='acquistionFund') Acquistion Fund:
+              .controls
+                .input-prepend.input-append
+                  span.add-on $
+                  input#acquistionFund.input-xlarge.focused(type='text', placeholder='Acquistion Fund' name='acquistionFund' value=(undefined===product ? '' : product.acquistionFund) required='true')
 
             .control-group
               label.control-label(for='acquistionDept') Acquistion Department:

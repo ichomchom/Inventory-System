@@ -12,11 +12,12 @@ var catalog = require('./routes/catalog'); //Import routes for "catalog" area of
 
 var app = express();
 
+
 //Import mongoose module
 var mongoose = require('mongoose');
 
 //Set up mongoose connection
-var db_url = 'mongodb://admin:Passw12345@ds151963.mlab.com:51963/inventory';
+var db_url = 'mongodb://admin:123456@ds151963.mlab.com:51963/inventory';
 var mongoDB = process.MONGODB_URI || db_url;
 mongoose.connect(mongoDB);
 
@@ -32,6 +33,7 @@ app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

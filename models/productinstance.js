@@ -15,15 +15,15 @@ var ProductInstanceSchema = Schema({
 	model: {type: String},
 	serialId: {type: String},
 	version: {type: String},
-	productionDate: {type: Date, required: true},
+	productionDate: {type: Date},
 	currentCustodianName: {type: String},
 	currentCustodianDept: {type: String},
-	assetCount: {type: Number, required: true},
+	assetCount: {type: Number},
 	currentLocation: {type: String},
-	acquistionDate: {type: Date, required: true},
+	acquistionDate: {type: Date},
 	acquistionFund: {type: String},
-	acquistionDept: {type: String, required: true},
-	acquistionProj: {type: String, required: true},
+	acquistionDept: {type: String},
+	acquistionProj: {type: String},
 	//assetStatus: {type: String, required: true},
 	checkedOut: {type: String},
 	offsite: {type: String},
@@ -42,7 +42,7 @@ ProductInstanceSchema
 ProductInstanceSchema
 .virtual('lastInventoryDate_formatted')
 .get(function(){
-	return moment(this.lastInventoryDate).format('MMMM Do, YYYY');
+	return moment(this.lastInventoryDate).format('MM/D/YYYY');
 });
 ProductInstanceSchema
 .virtual('due_date_formatted')

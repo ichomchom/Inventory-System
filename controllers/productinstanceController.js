@@ -59,10 +59,14 @@ exports.productinstance_create_post = function(req, res, next) {
     req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
     req.checkBody('tag', 'Tag must be specified').notEmpty();
     req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+   // req.checkBody('manufacturer', 'Manufacturer must not be empty').notEmpty();
+    req.checkBody('model','Model must not be empty').notEmpty();
+    req.checkBody('serialId','Serial ID must not be empty').notEmpty();
     req.checkBody('productionDate','Invalid date.').notEmpty();
     req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
     req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
     req.checkBody('acquistionDate','Invalid date.').notEmpty();
+    req.checkBody('acquistionFund','Acquistion Fund must not be empty.').notEmpty();
     req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
     req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
    // req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
@@ -78,10 +82,14 @@ exports.productinstance_create_post = function(req, res, next) {
     req.sanitize('poNum').escape();
     req.sanitize('tag').escape();
     req.sanitize('tagNum').escape();
+    //req.sanitize('manufacturer').escape();
+    req.sanitize('model').escape();
+    req.sanitize('serialId').escape();
     req.sanitize('productionDate').toDate();
     req.sanitize('currentCustodianDept').escape();
     req.sanitize('assetCount').escape();
     req.sanitize('acquistionDate').toDate();
+    req.sanitize('acquistionFund').escape();
     req.sanitize('acquistionDept').escape();
     req.sanitize('acquistionProj').escape();
   //  req.sanitize('assetStatus').escape();
@@ -95,10 +103,14 @@ exports.productinstance_create_post = function(req, res, next) {
     req.sanitize('poNum').trim();
     req.sanitize('tag').trim();
     req.sanitize('tagNum').trim();
+    //req.sanitize('manufacturer').trim();
+    req.sanitize('model').trim();
+    req.sanitize('serialId').trim();
     //req.sanitize('productionDate').trim();
     req.sanitize('currentCustodianDept').trim();
     req.sanitize('assetCount').trim();
     //req.sanitize('acquistionDate').trim();
+    req.sanitize('acquistionFund').trim();
     req.sanitize('acquistionDept').trim();
     req.sanitize('acquistionProj').trim();
   //  req.sanitize('assetStatus').trim();
@@ -114,10 +126,14 @@ exports.productinstance_create_post = function(req, res, next) {
         poNum: req.body.poNum,
         tag: req.body.tag,
         tagNum: req.body.tagNum,
+        //manufacturer: req.body.manufacturer,
+        model: req.body.model,
+        serialId: req.body.serialId,
         productionDate: req.body.productionDate,
         currentCustodianDept: req.body.currentCustodianDept,
         assetCount: req.body.assetCount,
         acquistionDate: req.body.acquistionDate,
+        acquistionFund: req.body.acquistionFund,
         acquistionDept: req.body.acquistionDept,
         acquistionProj: req.body.acquistionProj,
      //   assetStatus: req.body.assetStatus,
@@ -204,10 +220,14 @@ exports.productinstance_update_post = function(req, res, next) {
     req.checkBody('poNum','P.O. Number must not be empty.').notEmpty();
    // req.checkBody('tag', 'Tag must be specified').notEmpty();
     req.checkBody('tagNum','Tag Number must not be empty.').notEmpty();
+    //req.checkBody('manufacturer', 'Manufacturer must not be empty').notEmpty();
+    req.checkBody('model','Model must not be empty').notEmpty();
+    req.checkBody('serialId','Serial ID must not be empty').notEmpty();
     req.checkBody('productionDate','Invalid date.').notEmpty();
     req.checkBody('currentCustodianDept','Current Custodian Department must not be empty.').optional();
     req.checkBody('assetCount','Asset Count must not be empty.').notEmpty();
     req.checkBody('acquistionDate','Invalid date.').notEmpty();
+    req.checkBody('acquistionFund','Acquistion Fund must not be empty.').notEmpty();
     req.checkBody('acquistionDept','Acquistion Department must not be empty.').notEmpty();
     req.checkBody('acquistionProj','Acquistion Project must not be empty.').notEmpty();
    // req.checkBody('assetStatus','Asset Status must not be empty.').notEmpty();
@@ -223,6 +243,9 @@ exports.productinstance_update_post = function(req, res, next) {
     req.sanitize('poNum').escape();
     req.sanitize('tag').escape();
     req.sanitize('tagNum').escape();
+    //req.sanitize('manufacturer').escape();
+    req.sanitize('model').escape();
+    req.sanitize('serialId').escape();
     req.sanitize('productionDate').toDate();
     req.sanitize('currentCustodianDept').escape();
     req.sanitize('assetCount').escape();
@@ -240,6 +263,9 @@ exports.productinstance_update_post = function(req, res, next) {
     req.sanitize('poNum').trim();
     req.sanitize('tag').trim();
     req.sanitize('tagNum').trim();
+    //req.sanitize('manufacturer').trim();
+    req.sanitize('model').trim();
+    req.sanitize('serialId').trim();
     //req.sanitize('productionDate').trim();
     req.sanitize('currentCustodianDept').trim();
     req.sanitize('assetCount').trim();
@@ -259,10 +285,14 @@ exports.productinstance_update_post = function(req, res, next) {
         poNum: req.body.poNum,
         tag: req.body.tag,
         tagNum: req.body.tagNum,
+        //manufacturer: req.body.manufacturer,
+        model: req.body.model,
+        serialId: req.body.serialId,
         productionDate: req.body.productionDate,
         currentCustodianDept: req.body.currentCustodianDept,
         assetCount: req.body.assetCount,
         acquistionDate: req.body.acquistionDate,
+        acquistionFund: req.body.acquistionFund,
         acquistionDept: req.body.acquistionDept,
         acquistionProj: req.body.acquistionProj,
      //   assetStatus: req.body.assetStatus,
