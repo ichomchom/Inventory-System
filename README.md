@@ -15,3 +15,12 @@ These instructions will get you a copy of the project up and running on your loc
 * ```nmp start watch``` - watches the project with continuous rebuild.
 
 * Open a browser and navigate to ```http://localhost:3000/``` to see the web page.
+
+## Authors
+
+* **Huey Phan** - [ichomchom](https://github.com/ichomchom)
+
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
